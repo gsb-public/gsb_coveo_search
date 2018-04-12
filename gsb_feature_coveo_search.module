@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function gsb_feature_coveo_search_menu() {
+
+  $items['coveo-search'] = array(
+    'title' => 'Search',
+    'page callback' => 'gsb_feature_coveo_search_run_search',
+    'access callback' => array(TRUE),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['coveo-search-page'] = array(
+    'title' => 'Search Page',
+    'page callback' => 'gsb_feature_coveo_search_page',
+    'access callback' => array(TRUE),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function gsb_feature_coveo_search_run_search() {
+
+    if (empty($_POST)) {
+      return;
+    }
+
+    if (empty($_POST['queryFunctions'])) {
+      return;
+    }
+
+    if (empty($_POST['q'])) {
+      $search = '';
+    }
+    else {
+      $search = $_POST['q'];
+    }
+
+    $data = array(
+      "q" => $search,
+      "numberOfResults" => $_POST['numberOfResults'],
+      "firstResult" => $_POST['firstResult'],
+      "pipeline" => "gsb-pipeline",
+      "aq" => "@gsbaudience==public",
+      "customData" => array(
+        "context" => array(
+          "context_audience" => "public"
+        )
+      ),
+      "locale" => "en-US"
+    );
+
+    $query_data = json_encode($data);
+
+    $options = array(
+      'method' => 'POST',
+      'data' => $query_data,
+      'timeout' => 15,
+      'headers' => array('Content-Type' => 'application/json'),
+    );
+
+    $url = variable_get('coveo_search_endpoint', '');
+    $url .= "?";
+    $url .= variable_get("coveo_api_key");
+    $url .= "&";
+    $url .= variable_get("coveo_organization_id");
+
+    $result = drupal_http_request($url, $options);
+
+    drupal_add_http_header('Content-Type', 'application/json');
+    echo $result->data;
+    drupal_exit();
+}
+
+function gsb_feature_coveo_search_page($search_query = '') {
+  global $base_url;
+
+  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/CoveoFullSearch.css');
+  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveoextension.css');
+
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/CoveoJsSearch.Lazy.js');
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo.extension.js');
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/templates/templates.js');
+
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo-search-page.js');
+
+  drupal_add_js(array('gsb_feature_coveo_search_page' => array('search_query' => $search_query)), 'setting');
+  drupal_add_js(array('baseUrl' => $base_url), 'setting');
+
+  $template_data = array();
+  return theme('coveo_search_page', $template_data);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function gsb_feature_coveo_search_theme() {
+
+  $registry = array();
+  $coveo_search_template_dir = drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme';
+
+  $registry['coveo_search_page'] = array(
+    'variables' => array('search_data' => NULL),
+    'template' => 'coveo-search-page',
+    'path' => $coveo_search_template_dir,
+  );
+
+  return $registry;
+}
