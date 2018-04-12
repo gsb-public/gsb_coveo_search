@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (qsModel.attributes.q == "" && gInQueryString != null && gInQueryString != "") {
             gInQueryString = "";
-            //args.queryBuilder.expression.add(queryString);
             qsModel.set("q", queryString);
         }
     });
@@ -55,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     Coveo.$$(root).on('state:change:q', function (e, args) {
-        //debugger;
         console.log('The new value of ' + args.attribute + ' is now : ' + args.value);
     });
 

@@ -24,55 +24,55 @@ function gsb_feature_coveo_search_menu() {
 
 function gsb_feature_coveo_search_run_search() {
 
-    if (empty($_POST)) {
-      return;
-    }
+  if (empty($_POST)) {
+    return;
+  }
 
-    if (empty($_POST['queryFunctions'])) {
-      return;
-    }
+  if (empty($_POST['queryFunctions'])) {
+    return;
+  }
 
-    if (empty($_POST['q'])) {
-      $search = '';
-    }
-    else {
-      $search = $_POST['q'];
-    }
+  if (empty($_POST['q'])) {
+    $search = '';
+  }
+  else {
+    $search = $_POST['q'];
+  }
 
-    $data = array(
-      "q" => $search,
-      "numberOfResults" => $_POST['numberOfResults'],
-      "firstResult" => $_POST['firstResult'],
-      "pipeline" => "gsb-pipeline",
-      "aq" => "@gsbaudience==public",
-      "customData" => array(
-        "context" => array(
-          "context_audience" => "public"
-        )
-      ),
-      "locale" => "en-US"
-    );
+  $data = array(
+    "q" => $search,
+    "numberOfResults" => $_POST['numberOfResults'],
+    "firstResult" => $_POST['firstResult'],
+    "pipeline" => "gsb-pipeline",
+    "aq" => "@gsbaudience==public",
+    "customData" => array(
+      "context" => array(
+        "context_audience" => "public"
+      )
+    ),
+    "locale" => "en-US"
+  );
 
-    $query_data = json_encode($data);
+  $query_data = json_encode($data);
 
-    $options = array(
-      'method' => 'POST',
-      'data' => $query_data,
-      'timeout' => 15,
-      'headers' => array('Content-Type' => 'application/json'),
-    );
+  $options = array(
+    'method' => 'POST',
+    'data' => $query_data,
+    'timeout' => 15,
+    'headers' => array('Content-Type' => 'application/json'),
+  );
 
-    $url = variable_get('coveo_search_endpoint', '');
-    $url .= "?";
-    $url .= variable_get("coveo_api_key");
-    $url .= "&";
-    $url .= variable_get("coveo_organization_id");
+  $url = variable_get('coveo_search_endpoint', '');
+  $url .= "?";
+  $url .= variable_get("coveo_api_key");
+  $url .= "&";
+  $url .= variable_get("coveo_organization_id");
 
-    $result = drupal_http_request($url, $options);
+  $result = drupal_http_request($url, $options);
 
-    drupal_add_http_header('Content-Type', 'application/json');
-    echo $result->data;
-    drupal_exit();
+  drupal_add_http_header('Content-Type', 'application/json');
+  echo $result->data;
+  drupal_exit();
 }
 
 function gsb_feature_coveo_search_page($search_query = '') {

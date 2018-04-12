@@ -2,8 +2,7 @@
 // $Id$
 /**
  * @file
- *    default theme implementation for displaying Coveo Search Form and Results
- * @see template_preprocess_coveo_search_form()
+ *    default theme implementation for displaying Coveo Search Results Page
  * @see coveo-search-page.tpl.php
  */
 //dsm($variables);
