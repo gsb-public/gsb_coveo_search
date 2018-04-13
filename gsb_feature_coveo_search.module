@@ -1,5 +1,8 @@
 <?php
 
+// default theme impementations
+require_once(drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme/gsb_feature_coveo_search.theme.inc');
+
 /**
  * Implements hook_menu().
  */
@@ -20,6 +23,116 @@ function gsb_feature_coveo_search_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function gsb_feature_coveo_search_module_implements_alter(&$implementations, $hook) {
+  // Make sure we come after search module's implementation.
+  if ($hook == 'menu') {
+    $group = $implementations['gsb_feature_coveo_search'];
+    unset($implementations['gsb_feature_coveo_search']);
+    $implementations['gsb_feature_coveo_search'] = $group;
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function gsb_feature_coveo_search_block_info() {
+  $blocks = array();
+
+  // block search form
+  $blocks['coveo_search_block_form'] = array(
+    'info' => t('Coveo search form'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function gsb_feature_coveo_search_block_view($delta = '') {
+
+  $block = array();
+
+  if (true) { //user_access('access_google_appliance_content')) {
+    switch ($delta) {
+      case 'coveo_search_block_form':
+        $block['content'] = drupal_get_form('coveo_search_block_form');
+        break;
+    }
+  }
+
+  return $block;
+}
+
+/**
+ * Form builder outputs the search form for the search block
+ *
+ * @ingroup forms
+ * @see coveo_search_block_form_submit()
+ * @see coveo-search-block-form.tpl.php
+ */
+function coveo_search_block_form($form, &$form_state) {
+
+  $form['search_keys'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Enter the terms you wish to search for.'),
+    '#title_display' => 'invisible',
+    '#size' => 15,
+    '#default_value' => '',
+  );
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Search'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler for block search form just sets the redirect for the form
+ * based on the search query
+ */
+function coveo_search_block_form_submit($form, &$form_state) {
+  global $base_url;
+
+  // kill any dynamic destinations, as the results page is always the destination
+  if (isset($_GET['destination'])) {
+    unset($_GET['destination']);
+  }
+
+  // set the redirect
+  $search_query = urlencode($form_state['values']['search_keys']);
+  $form_state['redirect'] = url($base_url . '/coveo-search-page/' . $search_query, array('absolute' => TRUE));
+  // search execution happens in page callback
+}
+
+function gsb_feature_coveo_search_page($search_query = '') {
+  global $base_url;
+
+  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/CoveoFullSearch.css');
+  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveoextension.css');
+
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/CoveoJsSearch.Lazy.js');
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo.extension.js');
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/templates/templates.js');
+
+  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo-search-page.js');
+
+  drupal_add_js(array('gsb_feature_coveo_search_page' => array('search_query' => $search_query)), 'setting');
+  drupal_add_js(array('baseUrl' => $base_url), 'setting');
+
+  $template_data = array();
+  return theme('coveo_search_page', $template_data);
 }
 
 function gsb_feature_coveo_search_run_search() {
@@ -73,40 +186,4 @@ function gsb_feature_coveo_search_run_search() {
   drupal_add_http_header('Content-Type', 'application/json');
   echo $result->data;
   drupal_exit();
-}
-
-function gsb_feature_coveo_search_page($search_query = '') {
-  global $base_url;
-
-  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/CoveoFullSearch.css');
-  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveoextension.css');
-
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/CoveoJsSearch.Lazy.js');
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo.extension.js');
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/templates/templates.js');
-
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo-search-page.js');
-
-  drupal_add_js(array('gsb_feature_coveo_search_page' => array('search_query' => $search_query)), 'setting');
-  drupal_add_js(array('baseUrl' => $base_url), 'setting');
-
-  $template_data = array();
-  return theme('coveo_search_page', $template_data);
-}
-
-/**
- * Implements hook_theme().
- */
-function gsb_feature_coveo_search_theme() {
-
-  $registry = array();
-  $coveo_search_template_dir = drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme';
-
-  $registry['coveo_search_page'] = array(
-    'variables' => array('search_data' => NULL),
-    'template' => 'coveo-search-page',
-    'path' => $coveo_search_template_dir,
-  );
-
-  return $registry;
 }
