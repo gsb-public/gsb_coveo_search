@@ -32,7 +32,12 @@
             <div class="CoveoDidYouMean"></div>
             <div class="CoveoErrorReport" data-pop-up="false"></div>
             <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
-                <script id="Default" class="result-template" type="text/html" data-layout="list"><div class="coveo-result-frame">
+                <script id="Default" class="result-template" type="text/underscore" data-layout="list">
+                <% var uriFoundClass = ""; %>
+                <% if (printableUri == "https://www.gsb.stanford.edu/exec-ed/programs/advanced-leadership-program-asian-american-executives") { %>
+                <% var uriFoundClass = " foundit"; %>
+                <% } %>
+                <div class="coveo-result-frame<%= uriFoundClass %>">
                     <div class="coveo-result-row">
                         <div class="coveo-result-cell" style="padding-left:15px;"><div class="coveo-result-row">
                                 <div class="coveo-result-cell" style="font-size:18px;">
