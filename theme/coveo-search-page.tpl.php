@@ -12,7 +12,8 @@
 
     <div class="CoveoAnalytics"></div>
     <div class="coveo-search-section">
-        <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-partial-match="true" data-partial-match-threshold="1%" data-enable-wildcards="true" data-partial-match-keywords="1" data-inline="true" data-omnibox-timeout="1000"></div>
+        <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-query-suggest-addon="false" data-enable-partial-match="true" data-partial-match-threshold="1%" data-enable-wildcards="true" data-partial-match-keywords="1" data-inline="true" data-omnibox-timeout="1000"></div>
+        <span class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5"></span>
     </div>
     <div class="coveo-main-section">
         <div class="coveo-results-column">
@@ -33,11 +34,12 @@
             <div class="CoveoErrorReport" data-pop-up="false"></div>
             <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
                 <script id="Default" class="result-template" type="text/underscore" data-layout="list">
-                <% var uriFoundClass = ""; %>
-                <% if (printableUri == "https://www.gsb.stanford.edu/exec-ed/programs/advanced-leadership-program-asian-american-executives") { %>
-                <% var uriFoundClass = " foundit"; %>
-                <% } %>
-                <div class="coveo-result-frame<%= uriFoundClass %>">
+                  <% var featuredFound = "";
+                  if (isTopResult) {
+                    featuredFound = " featured-result";
+                  }
+                  %>
+                <div class="coveo-result-frame<%= featuredFound %>">
                     <div class="coveo-result-row">
                         <div class="coveo-result-cell" style="padding-left:15px;"><div class="coveo-result-row">
                                 <div class="coveo-result-cell" style="font-size:18px;">
@@ -68,12 +70,10 @@
                 </script>
             </div>
             <div class="CoveoPager"></div>
-            <div class="CoveoLogo"></div>
             <div class="CoveoResultsPerPage"></div>
         </div>
     </div>
     <div class="CoveoAnalyticsSuggestions" data-omnibox-z-index="53"></div>
-    <div class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5"></div>
 
 </div>
 

@@ -141,30 +141,37 @@ function gsb_feature_coveo_search_run_search() {
     return;
   }
 
-  if (empty($_POST['queryFunctions'])) {
+  if (empty($_POST['queryFunctions']) && empty($_POST['patternType'])) {
     return;
   }
 
-  if (empty($_POST['q'])) {
-    $search = '';
+  if (!empty($_POST['patternType'])) {
+    $data = $_POST;
+    $data['pipeline'] = "gsb-pipeline";
+    unset($data['sortCriteria']);
   }
   else {
-    $search = $_POST['q'];
-  }
+    if (empty($_POST['q'])) {
+      $search = '';
+    }
+    else {
+      $search = $_POST['q'];
+    }
 
-  $data = array(
-    "q" => $search,
-    "numberOfResults" => $_POST['numberOfResults'],
-    "firstResult" => $_POST['firstResult'],
-    "pipeline" => "gsb-pipeline",
-    "aq" => "@gsbaudience==public",
-    "customData" => array(
-      "context" => array(
-        "context_audience" => "public"
-      )
-    ),
-    "locale" => "en-US"
-  );
+    $data = array(
+      "q" => $search,
+      "numberOfResults" => $_POST['numberOfResults'],
+      "firstResult" => $_POST['firstResult'],
+      "pipeline" => "gsb-pipeline",
+      "aq" => "@gsbaudience==public",
+      "customData" => array(
+        "context" => array(
+          "context_audience" => "public"
+        )
+      ),
+      "locale" => "en-US"
+    );
+  }
 
   $query_data = json_encode($data);
 
@@ -176,6 +183,9 @@ function gsb_feature_coveo_search_run_search() {
   );
 
   $url = variable_get('coveo_search_endpoint', '');
+  if (!empty($_POST['patternType'])) {
+    $url .= "values";
+  }
   $url .= "?";
   $url .= variable_get("coveo_api_key");
   $url .= "&";
