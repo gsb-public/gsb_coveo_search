@@ -20,17 +20,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var coveoOrgId = '';
   var coveoSearchtoken = '';
-  var coveoProxyEndPoint = gBaseUrl + "/coveo-search/";
+  var coveoProxySearchEndPoint = gBaseUrl + "/coveo-search/";
+  var coveoProxyAnalyticsEndPoint = gBaseUrl + "/coveo-analytics/";
 
   Coveo.SearchEndpoint.configureCloudV2Endpoint(
     coveoOrgId,
     coveoSearchtoken,
-    coveoProxyEndPoint
+    coveoProxySearchEndPoint
   );
+
+  Coveo.Analytics.options.endpoint.defaultValue = coveoProxyAnalyticsEndPoint;
+//Coveo.Analytics.options.searchHub.defaultValue = 'Test4';
+  Coveo.Analytics.options.organization.defaultValue = coveoOrgId;
+
+  document.addEventListener("afterComponentsInitialization", function () {
+    var analytics = document.querySelector('.CoveoAnalytics');
+    if (analytics != null) {
+      Coveo.get(analytics).setOriginContext('Hosted');
+    }
+  });
 
   var root = Coveo.$$(document).find('#search');
 
-  Coveo.init(root);
+  Coveo.init(document.querySelector('#search'));
 
   Coveo.$$(root).on('buildingQuery', function (e, args) {
 
@@ -43,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (qsModel.attributes.q == "" && gInQueryString != null && gInQueryString != "") {
       gInQueryString = "";
+      args.queryBuilder.expression.add(queryString);
       qsModel.set("q", queryString);
     }
     
@@ -58,3 +71,4 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 });
+

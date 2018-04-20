@@ -8,12 +8,11 @@
 //dsm($variables);
 ?>
 
-<div id="search" class="CoveoSearchInterface" data-design="new">
+<div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-pipeline="gsb-pipeline" data-maximum-age="0">
 
     <div class="CoveoAnalytics"></div>
     <div class="coveo-search-section">
-        <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-query-suggest-addon="false" data-enable-partial-match="true" data-partial-match-threshold="1%" data-enable-wildcards="true" data-partial-match-keywords="1" data-inline="true" data-omnibox-timeout="1000"></div>
-        <span class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5"></span>
+        <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
     </div>
     <div class="coveo-main-section">
         <div class="coveo-results-column">
@@ -39,9 +38,10 @@
                     featuredFound = " featured-result";
                   }
                   %>
-                <div class="coveo-result-frame<%= featuredFound %>">
+                  <div class="coveo-result-frame<%= featuredFound %>">
                     <div class="coveo-result-row">
-                        <div class="coveo-result-cell" style="padding-left:15px;"><div class="coveo-result-row">
+                        <div class="coveo-result-cell">
+                            <div class="coveo-result-row">
                                 <div class="coveo-result-cell" style="font-size:18px;">
                                     <a class="CoveoResultLink">
                                     </a>
@@ -52,18 +52,13 @@
                                 </div>
                             </div>
                             <div class="coveo-result-row">
-                                <div class="coveo-result-cell">
-          <span class="CoveoExcerpt">
-          </span>
-                                </div>
+                                <div class="coveo-result-cell"><span class="CoveoExcerpt"></span></div>
                             </div>
-                            <span class="CoveoFieldValue" data-field="@printableuri" data-helper="anchor" data-html-value="true"></span></div>
+                        </div>
                     </div>
                     <div class="coveo-result-row">
-                        <div class="coveo-result-cell" style="width:85px;text-align:center">
-                        </div>
-                        <div class="coveo-result-cell" style="font-size:13px;padding-left: 15px;">
-
+                        <div class="coveo-result-cell" style="font-size:13px;">
+                        <span class="CoveoFieldValue" data-field="@printableuri" data-helper="anchor"data-html-value="true"></span>
                         </div>
                     </div>
                     </div>
@@ -72,8 +67,7 @@
             <div class="CoveoPager"></div>
             <div class="CoveoResultsPerPage"></div>
         </div>
-    </div>
-    <div class="CoveoAnalyticsSuggestions" data-omnibox-z-index="53"></div>
 
-</div>
+    </div>
+    <div class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5"></div></div>
 
