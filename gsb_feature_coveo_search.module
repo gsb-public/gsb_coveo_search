@@ -23,14 +23,36 @@ function gsb_feature_coveo_search_menu() {
   );
 
   $items['coveo-search-page'] = array(
-    'title' => 'Search Page',
+    'title' => 'Search',
     'page callback' => 'gsb_feature_coveo_search_page',
-    'page arguments' => array(1),
     'access callback' => array(TRUE),
     'type' => MENU_CALLBACK,
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_url_inbound_alter().
+ *
+ * Make search/* URL to actually behave as coveo-search-page/*.
+ */
+function gsb_feature_coveo_search_url_inbound_alter(&$path, $original_path, $path_language) {
+  // This will not allow us to use search module, it will redirect to gsearch instead.
+  if (arg(0, $path) == 'search') {
+    $path = 'coveo-search-page/' . arg(1, $path);
+  }
+}
+
+/**
+ * Implements hook_url_outbound_alter().
+ *
+ * Make gsearch/* links to go to search/* URL.
+ */
+function gsb_feature_coveo_search_url_outbound_alter(&$path, &$options, $original_path) {
+  if (arg(0, $path) == 'coveo-search-page') {
+    $path = str_replace('coveo-search-page', 'search', $path);
+  }
 }
 
 /**
@@ -120,12 +142,14 @@ function coveo_search_block_form_submit($form, &$form_state) {
 
   // set the redirect
   $search_query = urlencode($form_state['values']['search_keys']);
-  $form_state['redirect'] = url($base_url . '/coveo-search-page/' . $search_query, array('absolute' => TRUE));
+  $form_state['redirect'] = url($base_url . '/search#q=' . $search_query, array('absolute' => TRUE));
   // search execution happens in page callback
 }
 
-function gsb_feature_coveo_search_page($search_query = '') {
+function gsb_feature_coveo_search_page() {
   global $base_url;
+
+  $search_query = '';
 
   drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/CoveoFullSearch.css');
   drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveoextension.css');
@@ -205,6 +229,10 @@ function gsb_feature_coveo_search_run_search() {
   $url .= variable_get("coveo_organization_id");
 
   $result = drupal_http_request($url, $options);
+
+  if (empty($result->data)) {
+    return;
+  }
 
   drupal_add_http_header('Content-Type', 'application/json');
   echo $result->data;
