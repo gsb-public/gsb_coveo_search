@@ -8,7 +8,7 @@
 //dsm($variables);
 ?>
 
-<div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-pipeline="gsb-pipeline" data-maximum-age="0">
+<div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-maximum-age="0">
 
     <div class="CoveoAnalytics"></div>
     <div class="coveo-search-section">
@@ -47,8 +47,6 @@
                                     </a>
                                 </div>
                                 <div class="coveo-result-cell" style="width:120px; text-align:right; font-size:12px">
-          <span class="CoveoFieldValue" data-field="@date" data-helper="date">
-          </span>
                                 </div>
                             </div>
                             <div class="coveo-result-row">
@@ -69,5 +67,7 @@
         </div>
 
     </div>
-    <div class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5"></div></div>
+    <div class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5" data-query-override="@source=('MyGSB website', 'Stanford GSB public')"></div>
+
+</div>
 

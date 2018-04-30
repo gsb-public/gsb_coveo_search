@@ -30,15 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
   );
 
   Coveo.Analytics.options.endpoint.defaultValue = coveoProxyAnalyticsEndPoint;
-//Coveo.Analytics.options.searchHub.defaultValue = 'Test4';
   Coveo.Analytics.options.organization.defaultValue = coveoOrgId;
-
-  document.addEventListener("afterComponentsInitialization", function () {
-    var analytics = document.querySelector('.CoveoAnalytics');
-    if (analytics != null) {
-      Coveo.get(analytics).setOriginContext('Hosted');
-    }
-  });
 
   var root = Coveo.$$(document).find('#search');
 

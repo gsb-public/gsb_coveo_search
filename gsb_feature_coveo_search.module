@@ -18,7 +18,7 @@ function gsb_feature_coveo_search_menu() {
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
     'page callback' => 'gsb_feature_coveo_search_run_analytics',
-    'access callback' => array(TRUE),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
@@ -174,17 +174,36 @@ function gsb_feature_coveo_search_page() {
 
 function gsb_feature_coveo_search_run_search() {
 
-  if (empty($_POST)) {
+  //if (empty($_POST)) {
+    //return;
+  //}
+
+  if (!empty($_GET['q']) && strpos($_GET['q'], 'subscriptions')) {
     return;
   }
 
-  if (empty($_POST['queryFunctions']) && empty($_POST['patternType'])) {
-    return;
-  }
+  //if (empty($_POST['queryFunctions']) && empty($_POST['patternType'])) {
+    //return;
+  //}
+
+  //dpm('running search');
+
+  $pipeline = "gsb-pipeline";
+  $audience = "public";
+
+  list($pipeline, $audience) = gsb_feature_coveo_search_filter_info();
+
+  //dpm($pipeline);
+  //dpm($audience);
 
   if (!empty($_POST['patternType'])) {
     $data = $_POST;
-    $data['pipeline'] = "gsb-pipeline";
+    $data['pipeline'] = $pipeline;
+    if (!empty($data['queryOverride'])) {
+      if ($pipeline == "gsb-pipeline") {
+        $data['queryOverride'] = "@source=('Stanford GSB public')";
+      }
+    }
     unset($data['sortCriteria']);
   }
   else {
@@ -195,15 +214,25 @@ function gsb_feature_coveo_search_run_search() {
       $search = $_POST['q'];
     }
 
+    $numberOfResults = 100;
+    if (!empty($_POST['numberOfResults'])) {
+      $numberOfResults = $_POST['numberOfResults'];
+    }
+
+    $firstResult = 1;
+    if (!empty($_POST['firstResult'])) {
+      $firstResult = $_POST['firstResult'];
+    }
+
     $data = array(
       "q" => $search,
-      "numberOfResults" => $_POST['numberOfResults'],
-      "firstResult" => $_POST['firstResult'],
-      "pipeline" => "gsb-pipeline",
-      "aq" => "@gsbaudience==public",
+      "numberOfResults" => $numberOfResults,
+      "firstResult" => $firstResult,
+      "pipeline" => $pipeline,
+      "aq" => "@gsbaudience=" . $audience,
       "customData" => array(
         "context" => array(
-          "context_audience" => "public"
+          "context_audience" => $audience
         )
       ),
       "locale" => "en-US"
@@ -241,12 +270,17 @@ function gsb_feature_coveo_search_run_search() {
 
 function gsb_feature_coveo_search_run_analytics() {
 
-  $data['queryPipeline'] = "gsb-pipeline";
-  $data['queryText'] = "test";
-  $data['actionCause'] = "click";
-  $data['searchQueryUid'] = "abc";
-  $data['responseTime'] = 15;
-  $data['language'] = "en";
+  $received_json = file_get_contents("php://input",  TRUE);
+  $json = drupal_json_decode($received_json, TRUE);
+
+  $data = array(
+    "language" => $json[0]['language'],
+    "queryPipeline" => $json[0]['queryPipeline'],
+    "queryText" =>  $json[0]['queryText'],
+    "actionCause" => $json[0]['actionCause'],
+    "searchQueryUid" => $json[0]['searchQueryUid'],
+    "responseTime" => $json[0]['responseTime']
+  );
 
   $analytics_data = json_encode($data);
 
@@ -258,7 +292,7 @@ function gsb_feature_coveo_search_run_analytics() {
   );
 
   $url = variable_get('coveo_analytics_endpoint', '');
-  $url .= "/rest/v15/analytics/searches";
+  $url .= "/rest/v15/analytics/search";
 
   $url .= "?";
   $url .= variable_get("coveo_api_key");
@@ -270,4 +304,66 @@ function gsb_feature_coveo_search_run_analytics() {
   drupal_add_http_header('Content-Type', 'application/json');
   echo $result->data;
   drupal_exit();
+}
+
+function gsb_feature_coveo_search_filter_info() {
+  global $user;
+
+  $pipeline = "gsb-pipeline";
+  $audience = "('public')";
+
+  // todo: Deferred
+
+  if (function_exists('mygsb_masquerade_get_workgroup')) {
+
+    $pipeline = "mygsb-pipeline";
+
+    $workgroup = mygsb_masquerade_get_workgroup($user);
+    //dpm('found the workgroup');
+    //dpm($workgroup);
+
+    switch ($workgroup) {
+      case 'Staff':
+        $audience = "('public', 'MyGSBDrupal_staff')";
+        break;
+      case 'MBA Admit Round 1':
+        $audience = "('public', 'MyGSBDrupal_mbaadmitround1')";
+        break;
+      case 'MBA Admit Round 2':
+        $audience = "('public', 'MyGSBDrupal_mbaadmitround2')";
+        break;
+      case 'MBA Admit Round 3':
+        $audience = "('public', 'MyGSBDrupal_mbaadmitround3')";
+        break;
+      case 'MBA plus':
+        $audience = "('public', 'MyGSBDrupal_mbaplus')";
+        break;
+      case 'MBA1':
+        $audience = "('public', 'MyGSBDrupal_mba1')";
+        break;
+      case 'MBA2':
+        $audience = "('public', 'MyGSBDrupal_mba2')";
+        break;
+      case 'MSx':
+        $audience = "('public', 'MyGSBDrupal_msx')";
+        break;
+      case 'MSx Admit':
+        $audience = "('public', 'MyGSBDrupal_msxadmit')";
+        break;
+      case 'PhD':
+        $audience = "('public', 'MyGSBDrupal_phd')";
+        break;
+      case 'PhD Admit':
+        $audience = "('public', 'MyGSBDrupal_phdadmit')";
+        break;
+      case 'Faculty':
+        $audience = "('public', 'MyGSBDrupal_faculty')";
+        break;
+    }
+  }
+
+  //$pipeline = "mygsb-pipeline";
+  //$audience = "('public', 'MyGSBDrupal_mba1')";
+
+  return array ($pipeline, $audience);
 }
