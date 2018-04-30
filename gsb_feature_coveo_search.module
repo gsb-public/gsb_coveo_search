@@ -182,16 +182,14 @@ function gsb_feature_coveo_search_run_search() {
     return;
   }
 
-  //if (empty($_POST['queryFunctions']) && empty($_POST['patternType'])) {
-    //return;
-  //}
+  $time_start = round(microtime(true) * 1000);
 
   //dpm('running search');
 
   $pipeline = "gsb-pipeline";
   $audience = "public";
 
-  list($pipeline, $audience) = gsb_feature_coveo_search_filter_info();
+  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
 
   //dpm($pipeline);
   //dpm($audience);
@@ -257,13 +255,40 @@ function gsb_feature_coveo_search_run_search() {
   $url .= "&";
   $url .= variable_get("coveo_organization_id");
 
+  $pattern = "";
+  if (!empty($_POST['pattern']))
+  {
+    $pattern = $_POST['pattern'];
+  }
+
+  $time_end = round(microtime(true) * 1000);
+  $time = $time_end - $time_start;
+
+  $output = "Time from start of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
+  dpm($output);
+
+  $time_start = round(microtime(true) * 1000);
   $result = drupal_http_request($url, $options);
+  $time_end = round(microtime(true) * 1000);
+  $time = $time_end - $time_start;
+
+  $output = "Time for http request = " . sprintf('%f', $time);
+  dpm($output);
+
+  $time_start = round(microtime(true) * 1000);
 
   if (empty($result->data)) {
     return;
   }
 
   drupal_add_http_header('Content-Type', 'application/json');
+
+  $time_end = round(microtime(true) * 1000);
+  $time = $time_end - $time_start;
+
+  $output = "Time at end of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
+  dpm($output);
+
   echo $result->data;
   drupal_exit();
 }
@@ -306,7 +331,7 @@ function gsb_feature_coveo_search_run_analytics() {
   drupal_exit();
 }
 
-function gsb_feature_coveo_search_filter_info() {
+function gsb_feature_coveo_search_get_filter_info() {
   global $user;
 
   $pipeline = "gsb-pipeline";
@@ -321,7 +346,7 @@ function gsb_feature_coveo_search_filter_info() {
     $workgroup = mygsb_masquerade_get_workgroup($user);
     //dpm('found the workgroup');
     //dpm($workgroup);
-
+    
     switch ($workgroup) {
       case 'Staff':
         $audience = "('public', 'MyGSBDrupal_staff')";
