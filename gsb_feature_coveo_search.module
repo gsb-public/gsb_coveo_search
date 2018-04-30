@@ -265,7 +265,7 @@ function gsb_feature_coveo_search_run_search() {
   $time = $time_end - $time_start;
 
   $output = "Time from start of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
-  dpm($output);
+  watchdog('coveo', $output);
 
   $time_start = round(microtime(true) * 1000);
   $result = drupal_http_request($url, $options);
@@ -273,7 +273,7 @@ function gsb_feature_coveo_search_run_search() {
   $time = $time_end - $time_start;
 
   $output = "Time for http request = " . sprintf('%f', $time);
-  dpm($output);
+  watchdog('coveo', $output);
 
   $time_start = round(microtime(true) * 1000);
 
@@ -287,7 +287,7 @@ function gsb_feature_coveo_search_run_search() {
   $time = $time_end - $time_start;
 
   $output = "Time at end of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
-  dpm($output);
+  watchdog('coveo', $output);
 
   echo $result->data;
   drupal_exit();
