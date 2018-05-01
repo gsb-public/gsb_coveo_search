@@ -174,25 +174,16 @@ function gsb_feature_coveo_search_page() {
 
 function gsb_feature_coveo_search_run_search() {
 
-  //if (empty($_POST)) {
-    //return;
-  //}
-
   if (!empty($_GET['q']) && strpos($_GET['q'], 'subscriptions')) {
     return;
   }
 
   $time_start = round(microtime(true) * 1000);
 
-  //dpm('running search');
-
   $pipeline = "gsb-pipeline";
   $audience = "public";
 
   list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
-
-  //dpm($pipeline);
-  //dpm($audience);
 
   if (!empty($_POST['patternType'])) {
     $data = $_POST;
@@ -298,14 +289,7 @@ function gsb_feature_coveo_search_run_analytics() {
   $received_json = file_get_contents("php://input",  TRUE);
   $json = drupal_json_decode($received_json, TRUE);
 
-  $data = array(
-    "language" => $json[0]['language'],
-    "queryPipeline" => $json[0]['queryPipeline'],
-    "queryText" =>  $json[0]['queryText'],
-    "actionCause" => $json[0]['actionCause'],
-    "searchQueryUid" => $json[0]['searchQueryUid'],
-    "responseTime" => $json[0]['responseTime']
-  );
+  $data = $json[0];
 
   $analytics_data = json_encode($data);
 
