@@ -208,7 +208,7 @@ function gsb_feature_coveo_search_run_search() {
       $numberOfResults = $_POST['numberOfResults'];
     }
 
-    $firstResult = 1;
+    $firstResult = 0;
     if (!empty($_POST['firstResult'])) {
       $firstResult = $_POST['firstResult'];
     }
@@ -370,9 +370,6 @@ function gsb_feature_coveo_search_get_filter_info() {
         break;
     }
   }
-
-  //$pipeline = "mygsb-pipeline";
-  //$audience = "('public', 'MyGSBDrupal_mba1')";
 
   return array ($pipeline, $audience);
 }
