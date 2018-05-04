@@ -1064,9 +1064,9 @@ input[type=checkbox].coveo-checkbox + button {
 }
 
 .CoveoSearchInterface .coveo-search-section {
-  max-width: 800px;
-  margin: 54px auto 47px auto;
-  padding: 0 10px;
+  max-width: 825px;
+  margin: 0px auto 30px auto;
+  padding: 0 0px;
 }
 
 .CoveoSearchInterface .coveo-search-section .coveo-media-max-width-480 {
@@ -1121,7 +1121,7 @@ input[type=checkbox].coveo-checkbox + button {
 
 .CoveoSearchInterface .coveo-results-column {
   overflow: hidden;
-  padding: 10px 10px 10px 15px;
+  padding: 10px 10px 10px 0px;
 }
 
 .CoveoSearchInterface .coveo-results-column.coveo-no-results {
@@ -1227,10 +1227,13 @@ input[type=checkbox].coveo-checkbox + button {
   -o-justify-content: space-between;
   justify-content: space-between;
   -ms-flex-pack: justify;
-  padding-top: 10px;
+  padding-top: 0px;
   min-height: 35px;
   overflow: hidden;
-  box-shadow: 0 -1px 0px 0px #bcc3ca inset;
+  box-shadow: 0 -1px 0px 0px #c4c4c4 inset;
+  border-bottom: 1px solid #c4c4c4;
+  width:850px;
+  padding-bottom: 25px;
 }
 
 .coveo-results-header.coveo-no-results {
@@ -1252,6 +1255,7 @@ input[type=checkbox].coveo-checkbox + button {
   -moz-flex: auto;
   -ms-flex: auto;
   flex: auto;
+  color: #231f20;
 }
 
 .coveo-result-layout-section {
@@ -6744,7 +6748,7 @@ select.coveo-dropdown::-ms-expand {
   min-height: 100%;
   position: relative;
   margin: 0;
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif, sans-serif;
+  font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 15px;
   color: #373737;
 }
@@ -6837,7 +6841,7 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
-  height: 50px;
+  height: 70px;
   width: 60px;
   cursor: pointer;
   line-height: 0;
@@ -6862,13 +6866,13 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 }
 
 .CoveoSearchButton:hover .coveo-magnifier-circle-svg {
-  fill: #ecad00;
+  fill: #990000;
 }
 
 .coveo-search-button-svg {
   width: 18px;
   height: 18px;
-  color: #1d4f76;
+  color: #990000;
 }
 
 .coveo-executing-query .CoveoSearchButton .coveo-search-button-svg {
@@ -6877,7 +6881,7 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 
 .coveo-executing-query .CoveoSearchButton .coveo-search-button-loading-svg {
   display: inline;
-  color: #1d4f76;
+  color: #990000;
   width: 18px;
   height: 18px;
   -webkit-animation-name: coveo-spin;
@@ -7354,11 +7358,13 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 .CoveoResultLink,
 a.CoveoResultLink,
 .CoveoResult a.CoveoResultLink {
-  color: #296896;
+  /*color: #296896;*/
   text-decoration: none;
   cursor: pointer;
-  color: #009ddc;
+  color: #636f00;
   word-wrap: break-word;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .CoveoResultLink:hover,
@@ -7368,7 +7374,7 @@ a.CoveoResultLink:visited,
 .CoveoResult a.CoveoResultLink:hover,
 .CoveoResult a.CoveoResultLink:visited {
   text-decoration: none;
-  color: #263e55;
+  color: #636f00 !important;
 }
 
 .CoveoResultLink:hover,
@@ -10179,7 +10185,7 @@ a.CoveoResultLink.coveo-selected *,
 
 .magic-box .magic-box-input {
   background: #fff;
-  height: 48px;
+  height: 68px;
   overflow: hidden;
   position: relative;
 }
@@ -10197,7 +10203,7 @@ a.CoveoResultLink.coveo-selected *,
   top: 0;
   left: 0;
   width: 100%;
-  height: 48px;
+  height: 70px;
   white-space: pre;
   overflow: auto;
   box-sizing: border-box;
@@ -10261,8 +10267,8 @@ a.CoveoResultLink.coveo-selected *,
 .magic-box .magic-box-clear {
   position: relative;
   float: right;
-  height: 48px;
-  line-height: 48px;
+  height:68px;
+  line-height: 68px;
   text-align: center;
   font-size: 24px;
   transition: width 0.3s;
@@ -10584,8 +10590,8 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .CoveoResultList {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 0px;
+  margin-bottom: 25px;
 }
 
 .CoveoResultList .coveo-fade-out {
@@ -10679,10 +10685,13 @@ a.CoveoResultLink.coveo-selected *,
 
 .coveo-result-frame,
 .CoveoResult.coveo-result-frame {
-  margin-left: 0;
+  margin-left: 25px;
   display: block;
   width: 100%;
   height: 100%;
+  padding-bottom: 30px;
+  padding-top: 23px;
+  border-bottom: 1px solid #c4c4c4;
 }
 
 .coveo-result-frame .coveo-icon.coveo-icon-with-caption-overlay,
@@ -10696,7 +10705,7 @@ a.CoveoResultLink.coveo-selected *,
   width: 100%;
   display: table;
   table-layout: fixed;
-  margin: 0.25em 0;
+  /*margin: 0.65em 0;*/
 }
 
 .coveo-result-frame .coveo-result-cell,
@@ -10929,8 +10938,9 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .coveo-list-layout.CoveoResult {
-  border-bottom: 1px solid #bcc3ca;
-  padding: 16px 0px 16px 16px;
+  /*border-bottom: 1px solid #c4c4c4;*/
+  padding: 0px 0px 5px 0px;
+  width: 830px;
 }
 
 .coveo-card-layout {
@@ -11103,27 +11113,32 @@ a.CoveoResultLink.coveo-selected *,
 }
 
 .coveo-pager-list-item {
-  border: 1px solid #bcc3ca;
+  /*border: 1px solid #bcc3ca;*/
   border-radius: 2px;
-  margin: 5px 6px;
-  padding: 4px 8px;
+  margin: 5px 4px;
+  padding: 12px 16px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
   color: #009ddc;
   font-size: 14px;
   cursor: pointer;
+  height: 45px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif
 }
 
 .coveo-pager-list-item.coveo-active,
 .coveo-pager-list-item:hover {
-  color: #cddee9;
-  background-color: #1d4f76;
+  color: #ffffff;
+  background-color: #2d6280;
+  text-decoration: none;
 }
 
 .coveo-pager-list-item.coveo-active a,
 .coveo-pager-list-item:hover a {
-  color: #cddee9;
+  color: #ffffff;
 }
 
 .coveo-pager-previous,
@@ -11134,13 +11149,13 @@ a.CoveoResultLink.coveo-selected *,
   vertical-align: baseline;
   cursor: pointer;
   border: none;
-  padding: 0;
+  background-color: #2d6280;
 }
 
 .coveo-pager-previous:hover,
 .coveo-pager-next:hover {
-  color: #009ddc;
-  background-color: white;
+  color: #686868;
+  background-color: #2d6280;
 }
 
 .CoveoPager {
@@ -11151,9 +11166,9 @@ a.CoveoResultLink.coveo-selected *,
 
 .coveo-pager-next-icon-svg,
 .coveo-pager-previous-icon-svg {
-  width: 11px;
-  height: 20px;
-  color: #1d4f76;
+  width: 10px;
+  height: 16px;
+  color: #ffffff;
   vertical-align: middle;
 }
 
@@ -11292,8 +11307,10 @@ a.CoveoResultLink.coveo-selected *,
 */
 
 .CoveoQuerySummary {
-  color: #67768b;
+  color: #231f20;
   text-align: left;
+  font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
 }
 
 .CoveoQuerySummary div {
@@ -12522,14 +12539,16 @@ a.coveo-folding-show-less.coveo-selected * {
 */
 
 .CoveoResultsPerPage {
-  margin: 0 0 0 15px;
+  margin: 0 300px 0 0px;
   display: inline-block;
   float: right;
 }
 
 .coveo-results-per-page-text {
   padding-left: 0;
-  color: #bcc3ca;
+  color: #686868;
+  font-size: 16px;
+ font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif
 }
 
 .coveo-results-per-page-list {
@@ -12541,26 +12560,30 @@ a.coveo-folding-show-less.coveo-selected * {
 .coveo-results-per-page-list-item {
   border: 1px solid #bcc3ca;
   border-radius: 2px;
-  margin: 5px 6px;
-  padding: 4px 8px;
+  margin: 5px 4px;
+  padding: 12px 16px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
   color: #009ddc;
   font-size: 14px;
   cursor: pointer;
-  padding: 4px;
+  height: 45px;
+  font-weight: bold;
+  font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif
+
 }
 
 .coveo-results-per-page-list-item.coveo-active,
 .coveo-results-per-page-list-item:hover {
-  color: #cddee9;
-  background-color: #1d4f76;
+  color: #ffffff;
+  background-color: #2d6280;
 }
 
 .coveo-results-per-page-list-item.coveo-active a,
 .coveo-results-per-page-list-item:hover a {
-  color: #cddee9;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 .coveo-results-per-page-no-results {
@@ -13732,5 +13755,78 @@ a.coveo-folding-show-less.coveo-selected * {
   display: none;
 }
 
+.page-coveo-search-page #page-title {
+  padding-bottom: 30px;
+}
+
+.CoveoResult.coveo-result-frame .coveo-result-cell .CoveoFieldValue span.a:hover,
+.CoveoResult.coveo-result-frame .coveo-result-cell .CoveoFieldValue span.a:visited
+{
+  font-size: 12px;
+  color: #686868;
+}
+
+.CoveoResult .featured-result {
+  background-color: #f4f4f4;
+  margin-left: 0px;
+  width: 850px;
+  padding-left: 25px;
+  border: none;
+  margin-top: 25px;
+}
+
+.CoveoResult .featured-result a.CoveoResultLink,
+.CoveoResult .featured-result a.CoveoResultLink:hover, 
+.CoveoResult .featured-result a.CoveoResultLink:visited {
+  color: #990000 !important;
+  font-size: 24px;
+}
+
+.CoveoResult .featured-result .CoveoFieldValue a {
+  font-size: 18px !important;
+  color: #686868;
+}
+
+.CoveoResult .coveo-result-frame .coveo-result-cell .CoveoExcerpt
+{
+  font-size: 17px;
+  line-height: 1.5;
+  color: #231F20;
+  font-weight: normal;
+  font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif
+}
+
+.coveo-summary-section .CoveoQueryDuration
+{
+  display: none !important;
+}
+
+.CoveoResult .featured-result .coveo-result-cell .CoveoExcerpt
+{
+  display: none;
+}
+
+.CoveoResult .featured-result .coveo-result-cell{
+  padding-top: 0px;
+}
+
+.CoveoResult .featured-result .coveo-result-row{
+  margin: 0px;
+}
+
+.CoveoResult .coveo-result-frame .CoveoFieldValue a {
+  font-size: 12px;
+  color: #686868;
+}
+
+.CoveoResult .coveo-result-frame .coveo-result-row .coveo-result-cell .coveo-result-row
+{
+  padding-bottom: 15px;
+}
+
+.CoveoResult .featured-result .coveo-result-row .coveo-result-cell .coveo-result-row
+{
+  padding-bottom: 10px;
+}
 
 /*# sourceMappingURL=CoveoFullSearch.css.map*/
