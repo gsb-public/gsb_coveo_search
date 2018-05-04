@@ -43212,9 +43212,9 @@ var QuerySummary = /** @class */ (function (_super) {
                 var first = Globalize.format(data.query.firstResult + 1, 'n0');
                 var last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
                 var totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
-                var highlightFirst = Dom_1.$$('span', { className: 'coveo-highlight' }, first).el;
-                var highlightLast = Dom_1.$$('span', { className: 'coveo-highlight' }, last).el;
-                var highlightTotal = Dom_1.$$('span', { className: 'coveo-highlight' }, totalCount).el;
+                var highlightFirst = Dom_1.$$('span', { className: 'coveo-no-highlight' }, first).el;
+                var highlightLast = Dom_1.$$('span', { className: 'coveo-no-highlight' }, last).el;
+                var highlightTotal = Dom_1.$$('span', { className: 'coveo-no-highlight' }, totalCount).el;
                 var query = data.query.q ? _.escape(data.query.q.trim()) : '';
                 if (query) {
                     var highlightQuery = Dom_1.$$('span', { className: 'coveo-highlight' }, query).el;
