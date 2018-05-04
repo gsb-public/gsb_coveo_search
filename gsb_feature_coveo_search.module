@@ -15,6 +15,14 @@ function gsb_feature_coveo_search_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['coveo-search/v2/querySuggest'] = array(
+    'title' => 'Search',
+    'page callback' => 'gsb_feature_coveo_search_run_querysuggest',
+    'access callback' => array(TRUE),
+    'type' => MENU_CALLBACK,
+  );
+
+
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
     'page callback' => 'gsb_feature_coveo_search_run_analytics',
@@ -150,18 +158,11 @@ function gsb_feature_coveo_search_page() {
   global $base_url;
 
   $search_query = '';
+  
+  drupal_add_css('https://static.cloud.coveo.com/searchui/v1.2537/css/CoveoFullSearchNewDesign.css', 'external');
 
-  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/CoveoFullSearch.css');
-  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveoextension.css');
-
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/CoveoJsSearch.js');
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo.extension.js');
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/templates/templates.js');
-
-  //drupal_add_css('https://static.cloud.coveo.com/searchui/v1.2537/css/CoveoFullSearchNewDesign.css', 'external');
-
-  //drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/CoveoJsSearch.min.js', 'external');
-  //drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/templates/templatesNew.js', 'external');
+  drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/CoveoJsSearch.min.js', 'external');
+  drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/templates/templatesNew.js', 'external');
 
   drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo-search-page.js');
 
@@ -170,6 +171,58 @@ function gsb_feature_coveo_search_page() {
 
   $template_data = array();
   return theme('coveo_search_page', $template_data);
+}
+
+function gsb_feature_coveo_search_run_querysuggest() {
+
+  $pipeline = "gsb-pipeline";
+  $audience = "public";
+
+  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
+
+  $data = $_GET;
+
+  $data["q"] = $data['coveoquery'];
+  $data["aq"] = "@gsbaudience=" . $audience;
+  unset($data['coveoquery']);
+
+  $query_data = json_encode($data);
+
+  $apikey = variable_get("coveo_api_key");
+  $apikey = str_replace("access_token=","", $apikey);
+  $bearer = "Bearer " . $apikey;
+
+  $options = array(
+    'method' => 'GET',
+    'data' => $query_data,
+    'timeout' => 15,
+    'headers' => array('Content-Type' => 'application/json', 'Authorization' => $bearer),
+  );
+
+  $url = variable_get('coveo_search_endpoint', '');
+  $url .= "querySuggest";
+  $url .= "?";
+  $url .= variable_get("coveo_api_key");
+  $url .= "&";
+  $url .= variable_get("coveo_organization_id");
+
+  $url .= "&q=" . $data["q"];
+  $url .= "&language=" . "en";
+  $url .= "&pipeline=" . $pipeline;
+  $url .= "&enableWordCompletion=false";
+
+  $url = str_replace("platform.cloud.coveo.com","search.cloud.coveo.com", $url);
+
+  $result = drupal_http_request($url, $options);
+
+  if (empty($result->data)) {
+    return;
+  }
+
+  drupal_add_http_header('Content-Type', 'application/json');
+
+  echo $result->data;
+  drupal_exit();
 }
 
 function gsb_feature_coveo_search_run_search() {
@@ -213,19 +266,26 @@ function gsb_feature_coveo_search_run_search() {
       $firstResult = $_POST['firstResult'];
     }
 
-    $data = array(
-      "q" => $search,
-      "numberOfResults" => $numberOfResults,
-      "firstResult" => $firstResult,
-      "pipeline" => $pipeline,
-      "aq" => "@gsbaudience=" . $audience,
-      "customData" => array(
-        "context" => array(
-          "context_audience" => $audience
-        )
-      ),
-      "locale" => "en-US"
+    $data = $_POST;
+
+    $data["q"] = $search;
+    $data["aq"] = "@gsbaudience=" . $audience;
+
+    $data["pipeline"] = $pipeline;
+
+    $data["customData"] = array(
+      "context" => array(
+        "context_audience" => $audience
+      )
     );
+
+    unset($data['actionsHistory']);
+    unset($data['fieldsToInclude']);
+
+    $data['queryFunctions'] = array();
+    $data['rankingFunctions'] = array();
+    $data['groupBy'] = array();
+    
   }
 
   $query_data = json_encode($data);
@@ -370,6 +430,6 @@ function gsb_feature_coveo_search_get_filter_info() {
         break;
     }
   }
-
+  
   return array ($pipeline, $audience);
 }
