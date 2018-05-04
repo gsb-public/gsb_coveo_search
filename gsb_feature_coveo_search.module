@@ -158,8 +158,10 @@ function gsb_feature_coveo_search_page() {
   global $base_url;
 
   $search_query = '';
-  
+
   drupal_add_css('https://static.cloud.coveo.com/searchui/v1.2537/css/CoveoFullSearchNewDesign.css', 'external');
+
+  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveo-search-custom.css');
 
   drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/CoveoJsSearch.min.js', 'external');
   drupal_add_js('https://static.cloud.coveo.com/searchui/v1.2537/js/templates/templatesNew.js', 'external');
@@ -285,7 +287,7 @@ function gsb_feature_coveo_search_run_search() {
     $data['queryFunctions'] = array();
     $data['rankingFunctions'] = array();
     $data['groupBy'] = array();
-    
+
   }
 
   $query_data = json_encode($data);
@@ -343,6 +345,7 @@ function gsb_feature_coveo_search_run_search() {
   echo $result->data;
   drupal_exit();
 }
+
 
 function gsb_feature_coveo_search_run_analytics() {
 
@@ -430,6 +433,6 @@ function gsb_feature_coveo_search_get_filter_info() {
         break;
     }
   }
-  
+
   return array ($pipeline, $audience);
 }
