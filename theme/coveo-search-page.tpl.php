@@ -9,13 +9,13 @@
 ?>
 
 <div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-maximum-age="0">
-
     <div class="CoveoAnalytics"></div>
     <div class="coveo-search-section">
-        <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+        <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-query-extension-addon="true" data-inline="true"></div>
     </div>
     <div class="coveo-main-section">
         <div class="coveo-results-column">
+            <div class="CoveoShareQuery"></div>
             <div class="CoveoTriggers"></div>
             <div class="CoveoBreadcrumb"></div>
             <div class="CoveoSearchAlerts"></div>
@@ -38,15 +38,13 @@
                     featuredFound = " featured-result";
                   }
                   %>
-                  <div class="coveo-result-frame<%= featuredFound %>">
+                    <div class="coveo-result-frame<%= featuredFound %>">
                     <div class="coveo-result-row">
                         <div class="coveo-result-cell">
                             <div class="coveo-result-row">
                                 <div class="coveo-result-cell" style="font-size:18px;">
                                     <a class="CoveoResultLink">
                                     </a>
-                                </div>
-                                <div class="coveo-result-cell" style="width:120px; text-align:right; font-size:12px">
                                 </div>
                             </div>
                             <div class="coveo-result-row">
@@ -56,7 +54,7 @@
                     </div>
                     <div class="coveo-result-row">
                         <div class="coveo-result-cell" style="font-size:13px;">
-                        <span class="CoveoFieldValue" data-field="@printableuri" data-helper="anchor"data-html-value="true"></span>
+                            <span class="CoveoFieldValue" data-field="@printableuri" data-helper="anchor" data-html-value="true"></span>
                         </div>
                     </div>
                     </div>
@@ -65,9 +63,5 @@
             <div class="CoveoPager"></div>
             <div class="CoveoResultsPerPage"></div>
         </div>
-
     </div>
-    <div class="CoveoFieldSuggestions" data-field="@title" data-number-of-suggestions="5" data-query-override="@source=('MyGSB website', 'Stanford GSB public')"></div>
-
 </div>
-
