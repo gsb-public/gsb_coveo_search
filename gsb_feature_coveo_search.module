@@ -197,6 +197,7 @@ function gsb_feature_coveo_search_run_querysuggest() {
     )
   );
 
+  unset($data['coveoquery']);
   unset($data['actionsHistory']);
   unset($data['fieldsToInclude']);
 
