@@ -1,1 +1,19 @@
+.coveo-logo svg {
+    display : none;
+}
 
+.coveo-logo {
+    background-image: url("");
+    background-position: 0 0;
+    background-size: auto;
+    background-color: white;
+}
+
+.CoveoSearchInterface.coveo-waiting-for-first-query {
+    background: white;
+    background-color: white;
+}
+
+.coveo-first-loading-animation {
+    background: white;
+}
