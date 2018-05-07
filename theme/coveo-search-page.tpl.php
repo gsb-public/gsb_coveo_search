@@ -18,7 +18,6 @@
             <div class="CoveoShareQuery"></div>
             <div class="CoveoTriggers"></div>
             <div class="CoveoBreadcrumb"></div>
-            <div class="CoveoSearchAlerts"></div>
             <div class="coveo-results-header">
                 <div class="coveo-summary-section">
                     <span class="CoveoQuerySummary"></span>
