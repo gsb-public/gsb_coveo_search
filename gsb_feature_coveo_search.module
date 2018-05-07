@@ -182,11 +182,27 @@ function gsb_feature_coveo_search_run_querysuggest() {
 
   list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
 
-  $data = $_GET;
+  $data = $_POST;
 
-  $data["q"] = $data['coveoquery'];
+  $search = $_POST['q'];
+
+  $data["q"] = $search;
   $data["aq"] = "@gsbaudience=" . $audience;
-  unset($data['coveoquery']);
+
+  $data["pipeline"] = $pipeline;
+
+  $data["customData"] = array(
+    "context" => array(
+      "context_audience" => $audience
+    )
+  );
+
+  unset($data['actionsHistory']);
+  unset($data['fieldsToInclude']);
+
+  $data['queryFunctions'] = array();
+  $data['rankingFunctions'] = array();
+  $data['groupBy'] = array();
 
   $query_data = json_encode($data);
 
@@ -195,7 +211,7 @@ function gsb_feature_coveo_search_run_querysuggest() {
   $bearer = "Bearer " . $apikey;
 
   $options = array(
-    'method' => 'GET',
+    'method' => 'POST',
     'data' => $query_data,
     'timeout' => 15,
     'headers' => array('Content-Type' => 'application/json', 'Authorization' => $bearer),
@@ -207,11 +223,6 @@ function gsb_feature_coveo_search_run_querysuggest() {
   $url .= variable_get("coveo_api_key");
   $url .= "&";
   $url .= variable_get("coveo_organization_id");
-
-  $url .= "&q=" . $data["q"];
-  $url .= "&language=" . "en";
-  $url .= "&pipeline=" . $pipeline;
-  $url .= "&enableWordCompletion=false";
 
   $url = str_replace("platform.cloud.coveo.com","search.cloud.coveo.com", $url);
 
