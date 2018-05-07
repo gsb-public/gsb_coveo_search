@@ -1066,7 +1066,7 @@ input[type=checkbox].coveo-checkbox + button {
 .CoveoSearchInterface .coveo-search-section {
   max-width: 825px;
   margin: 0px auto 30px auto;
-  padding: 0 0px;
+  padding: 30px 0px 0px 0px;
 }
 
 .CoveoSearchInterface .coveo-search-section .coveo-media-max-width-480 {
@@ -13759,7 +13759,7 @@ a.coveo-folding-show-less.coveo-selected * {
 }
 
 .page-coveo-search-page #page-title {
-  padding-bottom: 30px;
+  padding-bottom: 0px;
 }
 
 .CoveoResult.coveo-result-frame .coveo-result-cell .CoveoFieldValue span.a:hover,
