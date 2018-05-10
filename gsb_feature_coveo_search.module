@@ -388,6 +388,9 @@ function gsb_feature_coveo_search_run_analytics() {
   if (!empty($_GET['q']) && strpos($_GET['q'], 'analytics/click') > 0) {
     $url = str_replace('analytics/search', 'analytics/click', $url);
   }
+  if (!empty($_GET['q']) && strpos($_GET['q'], 'analytics/custom') > 0) {
+    $url = str_replace('analytics/search', 'analytics/custom', $url);
+  }
 
   $url .= "?";
   $url .= variable_get("coveo_api_key");
