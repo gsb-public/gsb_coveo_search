@@ -373,6 +373,19 @@ function gsb_feature_coveo_search_run_analytics() {
     return;
   }
 
+  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
+
+  if (empty($data['customData'])) {
+    $data["customData"] = array(
+      "context" => array(
+        "context_audience" => $audience
+      )
+    );
+  }
+  else {
+    $data["customData"]["context"] = array("context_audience" => $audience);
+  }
+
   $analytics_data = json_encode($data);
 
   $options = array(
