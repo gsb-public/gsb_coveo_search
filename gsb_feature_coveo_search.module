@@ -358,13 +358,20 @@ function gsb_feature_coveo_search_run_search() {
   drupal_exit();
 }
 
-
 function gsb_feature_coveo_search_run_analytics() {
 
   $received_json = file_get_contents("php://input",  TRUE);
   $json = drupal_json_decode($received_json, TRUE);
 
-  $data = $json[0];
+  if (!empty($json[0])) {
+    $data = $json[0];
+  }
+  else if (!empty($json)) {
+    $data = $json;
+  }
+  else {
+    return;
+  }
 
   $analytics_data = json_encode($data);
 
@@ -377,6 +384,10 @@ function gsb_feature_coveo_search_run_analytics() {
 
   $url = variable_get('coveo_analytics_endpoint', '');
   $url .= "/rest/v15/analytics/search";
+
+  if (!empty($_GET['q']) && strpos($_GET['q'], 'analytics/click') > 0) {
+    $url = str_replace('analytics/search', 'analytics/click', $url);
+  }
 
   $url .= "?";
   $url .= variable_get("coveo_api_key");
