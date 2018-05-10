@@ -32,10 +32,11 @@
 .CoveoResult .featured-result {
   background-color: #f4f4f4;
   margin-left: 0px;
-  width: 850px;
+  width: 100%;
   padding-left: 25px;
   border: none;
   margin-top: 25px;
+  padding-right: 10px;
 }
 
 .CoveoResult .featured-result a.CoveoResultLink,
@@ -61,7 +62,7 @@
 
 .coveo-summary-section .CoveoQueryDuration
 {
-  display: none !important;
+  /*display: none !important;*/
 }
 
 .CoveoResult .featured-result .coveo-result-cell .CoveoExcerpt
@@ -75,11 +76,13 @@
 
 .CoveoResult .featured-result .coveo-result-row{
   margin: 0px;
+  word-wrap: break-word;
 }
 
 .CoveoResult .coveo-result-frame .CoveoFieldValue a {
   font-size: 12px;
   color: #686868;
+  word-wrap: break-word;
 }
 
 .CoveoResult .coveo-result-frame .coveo-result-row .coveo-result-cell .coveo-result-row
@@ -102,7 +105,6 @@ span.coveo-title-wrapper h1#page-title
   font-family: "NewsGothicBT","Avant Garde","Futura","Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 15px;
   color: #373737;
-  background-color: #f4f4f4;
 }
 
 .CoveoSearchInterface .coveo-main-section {
@@ -111,15 +113,15 @@ span.coveo-title-wrapper h1#page-title
 
 .CoveoSearchInterface .coveo-search-section {
 	max-width: 825px;
-	margin: 0px auto 30px auto;
+	margin: 0px auto 30px 0px;
 	padding: 30px 0px 0px 0px;
 }
 
 .coveo-results-header {
 	padding-top: 0px;
 	box-shadow: 0 -1px 0px 0px #c4c4c4 inset;
-	border-bottom: 1px solid #c4c4c4;
-	width:850px;
+  /*border-bottom: 1px solid #c4c4c4;*/
+  width:99%;
 	padding-bottom: 25px;
 }
 
@@ -133,7 +135,7 @@ span.coveo-title-wrapper h1#page-title
 .coveo-list-layout.CoveoResult {
   border-bottom: none;
   padding: 0px 0px 0px 0px;
-  width: 830px;
+  width: 99%;
 }
 
 .CoveoSearchbox .CoveoSearchButton {
@@ -176,6 +178,8 @@ span.coveo-title-wrapper h1#page-title
   padding-bottom: 25px;
   padding-top: 25px;
   border-bottom: 1px solid #c4c4c4;
+  padding-right: 8px;
+  width: 97%;
 }
 
 .coveo-result-frame .coveo-result-row,
@@ -258,7 +262,8 @@ a.CoveoResultLink:visited,
 }
 
 .CoveoResultsPerPage {
-  margin: 0 300px 0 0px;
+  margin: 0 16px 0 0px;
+  padding-left: 30px;
 }
 
 .coveo-results-per-page-text {
@@ -292,4 +297,10 @@ a.CoveoResultLink:visited,
 
 .CoveoResultList {
 	margin-top: 0px;
+}
+
+.coveo-result-frame .coveo-result-row, 
+.CoveoResult.coveo-result-frame .coveo-result-row
+{
+  width: 98%;
 }
