@@ -304,3 +304,82 @@ a.CoveoResultLink:visited,
 {
   width: 98%;
 }
+.CoveoSearchbox .magic-box .magic-box-input > input {
+  color: #231f20;
+}
+
+@media (max-width: 480px) {
+  .CoveoSearchInterface .CoveoSearchbox {
+    max-width: 847px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .page-coveo-search-page #page-title {
+    font-size: 24px;
+    color:  #231F20;
+  }
+  .CoveoResult .featured-result a.CoveoResultLink, 
+  .CoveoResult .featured-result a.CoveoResultLink:hover, 
+  .CoveoResult .featured-result a.CoveoResultLink:visited {
+    font-size: 18px;
+  }
+  .magic-box .magic-box-input 
+  .magic-box-underlay, 
+  .magic-box .magic-box-input > input{
+    font-size: 14px;
+  }
+  .CoveoQuerySummary {
+    font-size: 12px;
+  }
+  .CoveoResult .coveo-result-frame .coveo-result-cell .CoveoExcerpt {
+    font-size: 14px;
+    color:  #231F20;
+    line-height: 1.5;
+  }
+  .CoveoResultLink, a.CoveoResultLink, .CoveoResult a.CoveoResultLink {
+    font-size: 16px;
+  }
+
+  .CoveoQueryDuration {
+    font-size: 12px;
+  }
+  .CoveoResult .featured-result .CoveoFieldValue a {
+    font-size: 14px !important;
+  }
+  .coveo-results-header {
+    padding-bottom: 15px;
+  }
+
+  .CoveoSearchInterface .coveo-search-section {
+     margin: 0px auto 15px 0px;
+    padding: 15px 0px 0px 0px;
+  }
+  .CoveoResult .featured-result {
+    padding-left: 15px;
+    margin-top: 15px;
+    padding-right: 10px;
+  }
+  .coveo-result-frame, .CoveoResult.coveo-result-frame {
+    padding-bottom: 15px;
+    padding-top: 15px;
+  }
+  .CoveoResultsPerPage {
+    margin: 40px 16px 40px 0px;
+    padding-left: 30px;
+  }
+
+  .CoveoPager {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .coveo-pager-list-item {
+    padding: 4px 10px;
+    height: 30px;
+  }
+  .coveo-results-per-page-list-item {
+    padding: 4px 10px;
+    height: 30px;
+  }
+}
