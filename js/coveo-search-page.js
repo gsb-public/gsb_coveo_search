@@ -58,9 +58,25 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(results);
   });
 
+  Coveo.$$(root).on('newResultsDisplayed', function (e, args) {
+    if (getUrlVars()['q'] == undefined || getUrlVars()['q'] == '') {
+      var featured = document.querySelectorAll(".featured-result");
+      for (var index = 0; index < featured.length; index++) {
+        featured[index].classList.remove("featured-result");
+      }
+    }
+  });
+
   Coveo.$$(root).on('state:change:q', function (e, args) {
     console.log('The new value of ' + args.attribute + ' is now : ' + args.value);
   });
 
-});
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
+  }
 
+});
