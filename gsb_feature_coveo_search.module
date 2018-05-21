@@ -187,7 +187,7 @@ function gsb_feature_coveo_search_run_querysuggest() {
   $search = $_POST['q'];
 
   $data["q"] = $search;
-  $data["aq"] = "@gsbaudience=" . $audience;
+  $data["cq"] = "@gsbaudience=" . $audience;
 
   $data["pipeline"] = $pipeline;
 
@@ -283,7 +283,7 @@ function gsb_feature_coveo_search_run_search() {
     $data = $_POST;
 
     $data["q"] = $search;
-    $data["aq"] = "@gsbaudience=" . $audience;
+    $data["cq"] = "@gsbaudience=" . $audience;
 
     $data["pipeline"] = $pipeline;
 
@@ -435,40 +435,40 @@ function gsb_feature_coveo_search_get_filter_info() {
     
     switch ($workgroup) {
       case 'Staff':
-        $audience = "('public', 'MyGSBDrupal_staff')";
+        $audience = "('MyGSBDrupal_staff','public') OR NOT @gsbaudience";
         break;
       case 'MBA Admit Round 1':
-        $audience = "('public', 'MyGSBDrupal_mbaadmitround1')";
+        $audience = "('MyGSBDrupal_mbaadmitround1','public') OR NOT @gsbaudience";
         break;
       case 'MBA Admit Round 2':
-        $audience = "('public', 'MyGSBDrupal_mbaadmitround2')";
+        $audience = "('MyGSBDrupal_mbaadmitround2','public') OR NOT @gsbaudience";
         break;
       case 'MBA Admit Round 3':
-        $audience = "('public', 'MyGSBDrupal_mbaadmitround3')";
+        $audience = "('MyGSBDrupal_mbaadmitround3','public') OR NOT @gsbaudience";
         break;
       case 'MBA plus':
-        $audience = "('public', 'MyGSBDrupal_mbaplus')";
+        $audience = "('MyGSBDrupal_mbaplus','public') OR NOT @gsbaudience";
         break;
       case 'MBA1':
-        $audience = "('public', 'MyGSBDrupal_mba1')";
+        $audience = "('MyGSBDrupal_mba1','public') OR NOT @gsbaudience";
         break;
       case 'MBA2':
-        $audience = "('public', 'MyGSBDrupal_mba2')";
+        $audience = "('MyGSBDrupal_mba2','public') OR NOT @gsbaudience";
         break;
       case 'MSx':
-        $audience = "('public', 'MyGSBDrupal_msx')";
+        $audience = "('MyGSBDrupal_msx','public') OR NOT @gsbaudience";
         break;
       case 'MSx Admit':
-        $audience = "('public', 'MyGSBDrupal_msxadmit')";
+        $audience = "('MyGSBDrupal_msxadmit','public') OR NOT @gsbaudience";
         break;
       case 'PhD':
-        $audience = "('public', 'MyGSBDrupal_phd')";
+        $audience = "('MyGSBDrupal_phd','public') OR NOT @gsbaudience";
         break;
       case 'PhD Admit':
-        $audience = "('public', 'MyGSBDrupal_phdadmit')";
+        $audience = "('MyGSBDrupal_phdadmit','public') OR NOT @gsbaudience";
         break;
       case 'Faculty':
-        $audience = "('public', 'MyGSBDrupal_faculty')";
+        $audience = "('MyGSBDrupal_faculty','public') OR NOT @gsbaudience";
         break;
     }
   }
