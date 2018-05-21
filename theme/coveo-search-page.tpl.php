@@ -8,7 +8,7 @@
 //dsm($variables);
 ?>
 
-<div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-maximum-age="0">
+<div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-enable-duplicate-filtering="true" data-maximum-age="0">
     <div class="CoveoAnalytics"></div>
     <div class="coveo-search-section">
         <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-query-extension-addon="true" data-inline="true"></div>
