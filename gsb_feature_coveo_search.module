@@ -22,7 +22,6 @@ function gsb_feature_coveo_search_menu() {
     'type' => MENU_CALLBACK,
   );
 
-
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
     'page callback' => 'gsb_feature_coveo_search_run_analytics',
@@ -149,7 +148,7 @@ function coveo_search_block_form_submit($form, &$form_state) {
   }
 
   // set the redirect
-  $search_query = urlencode($form_state['values']['search_keys']);
+  $search_query = rawurlencode($form_state['values']['search_keys']);
   $form_state['redirect'] = url($base_url . '/search#q=' . $search_query, array('absolute' => TRUE));
   // search execution happens in page callback
 }
@@ -284,6 +283,8 @@ function gsb_feature_coveo_search_run_search() {
 
     $data["q"] = $search;
     $data["cq"] = "@gsbaudience=" . $audience;
+
+    $data["enableDuplicateFiltering"] = true;
 
     $data["pipeline"] = $pipeline;
 
