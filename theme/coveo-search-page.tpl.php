@@ -10,6 +10,12 @@
 
 <div id="search" class="CoveoSearchInterface" data-enable-history="true" data-design="new" data-enable-duplicate-filtering="true" data-maximum-age="0">
     <div class="CoveoAnalytics"></div>
+    <!--
+    <div class="coveo-tab-section">
+        <div class="CoveoTab" data-id="MyGSB" data-caption="MyGSB" data-expression="@gsbaudience=&quot;MyGSBDrupal_mba1&quot;" data-enable-duplicate-filtering="true" data-pipeline="mygsb-pipeline"></div>
+        <a class="CoveoTab" data-id="Public" data-caption="Public" data-expression="@gsbaudience=&quot;public&quot;" data-enable-duplicate-filtering="true" data-pipeline="mygsb-pipeline"></a>
+    </div>
+    -->
     <div class="coveo-search-section">
         <div class="CoveoSearchbox" data-enable-omnibox="true" data-enable-query-extension-addon="true" data-inline="true"></div>
     </div>
