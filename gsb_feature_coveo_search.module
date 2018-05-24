@@ -54,7 +54,7 @@ function gsb_feature_coveo_search_url_inbound_alter(&$path, $original_path, $pat
 /**
  * Implements hook_url_outbound_alter().
  *
- * Make gsearch/* links to go to search/* URL.
+ * Make coveo-search-page/* links to go to search/* URL.
  */
 function gsb_feature_coveo_search_url_outbound_alter(&$path, &$options, $original_path) {
   if (arg(0, $path) == 'coveo-search-page') {
@@ -86,6 +86,12 @@ function gsb_feature_coveo_search_block_info() {
     'cache' => DRUPAL_NO_CACHE,
   );
 
+  // block search suggests form
+  $blocks['coveo_search_block_suggests_form'] = array(
+    'info' => t('Coveo search suggests form'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
   return $blocks;
 }
 
@@ -100,6 +106,9 @@ function gsb_feature_coveo_search_block_view($delta = '') {
     switch ($delta) {
       case 'coveo_search_block_form':
         $block['content'] = drupal_get_form('coveo_search_block_form');
+        break;
+      case 'coveo_search_block_suggests_form':
+        $block['content'] = drupal_get_form('coveo_search_block_suggests_form');
         break;
     }
   }
@@ -153,6 +162,56 @@ function coveo_search_block_form_submit($form, &$form_state) {
   // search execution happens in page callback
 }
 
+/**
+ * Form builder outputs the search form for the search block
+ *
+ * @ingroup forms
+ * @see coveo_search_block_suggests_form_submit()
+ * @see coveo-search-block-suggests-form.tpl.php
+ */
+function coveo_search_block_suggests_form($form, &$form_state) {
+  global $base_url;
+
+  $form['search_keys'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Enter the terms you wish to search for.'),
+    '#title_display' => 'invisible',
+    '#size' => 15,
+    '#default_value' => '',
+  );
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Search'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler for block search form just sets the redirect for the form
+ * based on the search query
+ */
+function coveo_search_block_suggests_form_submit($form, &$form_state) {
+  global $base_url;
+
+  // kill any dynamic destinations, as the results page is always the destination
+  if (isset($_GET['destination'])) {
+    unset($_GET['destination']);
+  }
+
+  // set the redirect
+  $search_query = urlencode($form_state['values']['search_keys']);
+  $form_state['redirect'] = url($base_url . '/search#q=' . $search_query, array('absolute' => TRUE));
+  // search execution happens in page callback
+}
+
+/**
+ * Displays Search Page using Coveo template
+ */
 function gsb_feature_coveo_search_page() {
   global $base_url;
 
@@ -174,6 +233,9 @@ function gsb_feature_coveo_search_page() {
   return theme('coveo_search_page', $template_data);
 }
 
+/**
+ * Proxy for posting query suggestions
+ */
 function gsb_feature_coveo_search_run_querysuggest() {
 
   $pipeline = "gsb-pipeline";
@@ -238,6 +300,9 @@ function gsb_feature_coveo_search_run_querysuggest() {
   drupal_exit();
 }
 
+/**
+ * Proxy for posting search queries
+ */
 function gsb_feature_coveo_search_run_search() {
 
   if (!empty($_GET['q']) && strpos($_GET['q'], 'subscriptions')) {
@@ -359,6 +424,9 @@ function gsb_feature_coveo_search_run_search() {
   drupal_exit();
 }
 
+/**
+ * Proxy for posting analytics data
+ */
 function gsb_feature_coveo_search_run_analytics() {
 
   $received_json = file_get_contents("php://input",  TRUE);
@@ -418,6 +486,9 @@ function gsb_feature_coveo_search_run_analytics() {
   drupal_exit();
 }
 
+/**
+ * Returns pipeline and audience filter settings for user
+ */
 function gsb_feature_coveo_search_get_filter_info() {
   global $user;
 
