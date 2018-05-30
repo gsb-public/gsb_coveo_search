@@ -238,23 +238,25 @@ function gsb_feature_coveo_search_page() {
  */
 function gsb_feature_coveo_search_run_querysuggest() {
 
-  $pipeline = "gsb-pipeline";
-  $audience = "public";
+  list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
+  $source = "@source=('Stanford GSB public')";
+  if ($pipeline == 'mygsb-pipeline') {
+    $source = "(@source=('Stanford GSB public') OR @source=('MyGSB website'))";
+  }
 
   $data = $_POST;
 
   $search = $_POST['q'];
 
   $data["q"] = $search;
-  $data["cq"] = "@gsbaudience=" . $audience;
+  $data["cq"] = $source . " AND " . $audience;
 
   $data["pipeline"] = $pipeline;
 
   $data["customData"] = array(
     "context" => array(
-      "context_audience" => $audience
+      "context_audience" => $contextAudience
     )
   );
 
@@ -311,10 +313,12 @@ function gsb_feature_coveo_search_run_search() {
 
   $time_start = round(microtime(true) * 1000);
 
-  $pipeline = "gsb-pipeline";
-  $audience = "public";
+  list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
+  $source = "@source=('Stanford GSB public')";
+  if ($pipeline == 'mygsb-pipeline') {
+    $source = "(@source=('Stanford GSB public') OR @source=('MyGSB website'))";
+  }
 
   if (!empty($_POST['patternType'])) {
     $data = $_POST;
@@ -347,7 +351,7 @@ function gsb_feature_coveo_search_run_search() {
     $data = $_POST;
 
     $data["q"] = $search;
-    $data["cq"] = "@gsbaudience=" . $audience;
+    $data["cq"] = $source . " AND " . $audience;
 
     $data["enableDuplicateFiltering"] = true;
 
@@ -355,7 +359,7 @@ function gsb_feature_coveo_search_run_search() {
 
     $data["customData"] = array(
       "context" => array(
-        "context_audience" => $audience
+        "context_audience" => $contextAudience
       )
     );
 
@@ -493,7 +497,8 @@ function gsb_feature_coveo_search_get_filter_info() {
   global $user;
 
   $pipeline = "gsb-pipeline";
-  $audience = "('public')";
+  $audience = "@gsbaudience=('public')";
+  $contextAudience = "public";
 
   // todo: Deferred
 
@@ -507,43 +512,55 @@ function gsb_feature_coveo_search_get_filter_info() {
     
     switch ($workgroup) {
       case 'Staff':
-        $audience = "('MyGSBDrupal_staff','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_staff','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_staff';
         break;
       case 'MBA Admit Round 1':
-        $audience = "('MyGSBDrupal_mbaadmitround1','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround1','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mbaadmitround1';
         break;
       case 'MBA Admit Round 2':
-        $audience = "('MyGSBDrupal_mbaadmitround2','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround2','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mbaadmitround2';
         break;
       case 'MBA Admit Round 3':
-        $audience = "('MyGSBDrupal_mbaadmitround3','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround3','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mbaadmitround3';
         break;
       case 'MBA plus':
-        $audience = "('MyGSBDrupal_mbaplus','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaplus','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mbaplus';
         break;
       case 'MBA1':
-        $audience = "('MyGSBDrupal_mba1','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mba1','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mba1';
         break;
       case 'MBA2':
-        $audience = "('MyGSBDrupal_mba2','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mba2','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_mba2';
         break;
       case 'MSx':
-        $audience = "('MyGSBDrupal_msx','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_msx','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_msx';
         break;
       case 'MSx Admit':
-        $audience = "('MyGSBDrupal_msxadmit','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_msxadmit','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_msxadmit';
         break;
       case 'PhD':
-        $audience = "('MyGSBDrupal_phd','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_phd','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_phd';
         break;
       case 'PhD Admit':
-        $audience = "('MyGSBDrupal_phdadmit','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_phdadmit','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_phdadmit';
         break;
       case 'Faculty':
-        $audience = "('MyGSBDrupal_faculty','public') OR NOT @gsbaudience";
+        $audience = "(@gsbaudience=('MyGSBDrupal_faculty','public') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_faculty';
         break;
     }
   }
 
-  return array ($pipeline, $audience);
+  return array ($pipeline, $audience, $contextAudience);
 }
