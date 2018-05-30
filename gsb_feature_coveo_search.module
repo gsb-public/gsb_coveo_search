@@ -240,9 +240,9 @@ function gsb_feature_coveo_search_run_querysuggest() {
 
   list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  $source = "@source=('Stanford GSB public')";
+  $source = "@source=(" . '"' . "GSB public website" . '"' . ")";
   if ($pipeline == 'mygsb-pipeline') {
-    $source = "(@source=('Stanford GSB public') OR @source=('MyGSB website'))";
+    $source = "(" . "@source=(" . '"' . "GSB public website" . '"' . ")" . " OR " . "@source=(" . '"' . "MyGSB website" . '"' . ")" . ")";
   }
 
   $data = $_POST;
@@ -315,9 +315,9 @@ function gsb_feature_coveo_search_run_search() {
 
   list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  $source = "@source=('Stanford GSB public')";
+  $source = "@source=(" . '"' . "GSB public website" . '"' . ")";
   if ($pipeline == 'mygsb-pipeline') {
-    $source = "(@source=('Stanford GSB public') OR @source=('MyGSB website'))";
+    $source = "(" . "@source=(" . '"' . "GSB public website" . '"' . ")" . " OR " . "@source=(" . '"' . "MyGSB website" . '"' . ")" . ")";
   }
 
   if (!empty($_POST['patternType'])) {
@@ -509,7 +509,7 @@ function gsb_feature_coveo_search_get_filter_info() {
     $workgroup = mygsb_masquerade_get_workgroup($user);
     //dpm('found the workgroup');
     //dpm($workgroup);
-    
+
     switch ($workgroup) {
       case 'Staff':
         $audience = "(@gsbaudience=('MyGSBDrupal_staff','public') OR NOT @gsbaudience)";
