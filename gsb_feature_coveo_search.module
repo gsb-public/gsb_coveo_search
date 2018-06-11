@@ -40,6 +40,28 @@ function gsb_feature_coveo_search_menu() {
 }
 
 /**
+ * Implements hook_page_alter().
+ *
+ * Adds the Coveo Page Event javascript code for tracking of all page views.
+ */
+function gsb_feature_coveo_search_page_alter(&$page) {
+  if (!empty($_GET['q'])) {
+    if (strpos($_GET['q'], 'admin') !== false) {
+      return;
+    }
+  }
+  $my_path = drupal_get_path('module', 'gsb_feature_coveo_search' );
+  $page ['content']['#attached']['js'][] = array(
+    'type'=>'file',
+    'data' => 'https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js'
+  );
+  $page ['content']['#attached']['js'][] = array(
+    'type'=>'file',
+    'data' => $my_path . '/js/coveo-search-page-event.js'
+  );
+}
+
+/**
  * Implements hook_url_inbound_alter().
  *
  * Make search/* URL to actually behave as coveo-search-page/*.
