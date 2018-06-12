@@ -32,6 +32,10 @@
                 <div class="coveo-result-layout-section">
                     <span class="CoveoResultLayout"></span>
                 </div>
+                <div class="coveo-sort-section">
+                    <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+                    <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+                </div>
             </div>
             <div class="CoveoHiddenQuery"></div>
             <div class="CoveoDidYouMean"></div>
