@@ -399,8 +399,6 @@ function gsb_feature_coveo_search_run_search() {
         'injectionDepth' => 1000
       )
     );
-
-    $data['groupBy'] = array();
   }
 
   $query_data = json_encode($data);
