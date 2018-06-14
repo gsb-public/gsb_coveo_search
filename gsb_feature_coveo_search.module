@@ -375,7 +375,7 @@ function gsb_feature_coveo_search_run_search() {
     $data["q"] = $search;
     $data["cq"] = $source . " AND " . $audience;
 
-    $data["enableDuplicateFiltering"] = true;
+    unset($data["enableDuplicateFiltering"]);
 
     $data["pipeline"] = $pipeline;
 
@@ -391,7 +391,7 @@ function gsb_feature_coveo_search_run_search() {
     $data['queryFunctions'] = array();
     $data['rankingFunctions'] = array();
 
-    $data['groupBy'] = array( 
+    $data['groupBy'] = array(
       array(
         'field' => '@content_type',
         'maximumNumberOfValues' => 9,
