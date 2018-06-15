@@ -25,7 +25,7 @@ function gsb_feature_coveo_search_menu() {
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
     'page callback' => 'gsb_feature_coveo_search_run_analytics',
-    'access arguments' => array('access content'),
+    'access callback' => array(TRUE),
     'type' => MENU_CALLBACK,
   );
 
@@ -382,7 +382,11 @@ function gsb_feature_coveo_search_run_search() {
     $data["q"] = $search;
     $data["cq"] = $source . " AND " . $audience;
 
-    unset($data["enableDuplicateFiltering"]);
+    // todo: The following line was needed to get the 'Faculty' facet working on Public web site.
+    // All other facets seemed to work fine.
+    // I believe this needs to be raised as an issue with Coveo support.
+    //unset($data["enableDuplicateFiltering"]);
+    $data["enableDuplicateFiltering"] = true;
 
     $data["pipeline"] = $pipeline;
 
