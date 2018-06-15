@@ -18,6 +18,12 @@ function gsb_feature_coveo_search_theme() {
   'path' => $coveo_search_template_dir,
   );
 
+  $registry['coveo_mygsb_search_page'] = array(
+    'variables' => array('search_data' => NULL),
+    'template' => 'coveo-mygsb-search-page',
+    'path' => $coveo_search_template_dir,
+  );
+
   // Block search form.
   $registry['coveo_search_block_form'] = array(
     'render element' => 'form',
