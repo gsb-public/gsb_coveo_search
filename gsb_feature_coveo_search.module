@@ -252,7 +252,14 @@ function gsb_feature_coveo_search_page() {
   drupal_add_js(array('baseUrl' => $base_url), 'setting');
 
   $template_data = array();
-  return theme('coveo_search_page', $template_data);
+
+  $pos = strpos($base_url, 'mygsb');
+  if ($pos === false) {
+    return theme('coveo_search_page', $template_data);
+  }
+  else {
+    return theme('coveo_mygsb_search_page', $template_data);
+  }
 }
 
 /**
