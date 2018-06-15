@@ -406,7 +406,7 @@ function gsb_feature_coveo_search_run_search() {
 
     $data['groupBy'] = array(
       array(
-        'field' => '@content_type',
+        'field' => '@source',
         'maximumNumberOfValues' => 9,
         'sortCriteria' => 'occurrences',
         'injectionDepth' => 1000
