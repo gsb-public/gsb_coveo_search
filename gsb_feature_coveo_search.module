@@ -282,6 +282,7 @@ function gsb_feature_coveo_search_run_querysuggest() {
   $data["cq"] = $source . " AND " . $audience;
 
   $data["pipeline"] = $pipeline;
+  $data["searchHub"] = $pipeline;
 
   $data["customData"] = array(
     "context" => array(
@@ -389,6 +390,7 @@ function gsb_feature_coveo_search_run_search() {
     $data["enableDuplicateFiltering"] = true;
 
     $data["pipeline"] = $pipeline;
+    $data["searchHub"] = $pipeline;
 
     $data["customData"] = array(
       "context" => array(
