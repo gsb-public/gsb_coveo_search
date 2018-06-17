@@ -566,7 +566,7 @@ function gsb_feature_coveo_search_get_filter_info() {
         $contextAudience = 'MyGSBDrupal_mbaadmitround2';
         break;
       case 'MBA Admit Round 3':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround3','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround3','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mbaadmitround3';
         break;
       case 'MBA plus':
@@ -590,7 +590,7 @@ function gsb_feature_coveo_search_get_filter_info() {
         $contextAudience = 'MyGSBDrupal_msxadmit';
         break;
       case 'PhD':
-        $audience = "(@gsbaudience=('MyGSBDrupal_phd','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_phd','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_phd';
         break;
       case 'PhD Admit':
