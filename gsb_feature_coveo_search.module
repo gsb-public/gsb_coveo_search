@@ -404,14 +404,18 @@ function gsb_feature_coveo_search_run_search() {
     $data['queryFunctions'] = array();
     $data['rankingFunctions'] = array();
 
-    $data['groupBy'] = array(
-      array(
-        'field' => '@source',
-        'maximumNumberOfValues' => 9,
-        'sortCriteria' => 'occurrences',
-        'injectionDepth' => 1000
-      )
-    );
+    // If on MyGSB site
+    if (function_exists('mygsb_masquerade_get_workgroup')) {
+      // add groupBy/facet for @source
+      $data['groupBy'] = array(
+        array(
+          'field' => '@source',
+          'maximumNumberOfValues' => 9,
+          'sortCriteria' => 'occurrences',
+          'injectionDepth' => 1000
+        )
+      );
+    }
   }
 
   $query_data = json_encode($data);
@@ -553,16 +557,12 @@ function gsb_feature_coveo_search_get_filter_info() {
     //dpm($workgroup);
 
     switch ($workgroup) {
-      case 'Staff':
-        $audience = "(@gsbaudience=('MyGSBDrupal_staff','public') OR NOT @gsbaudience)";
-        $contextAudience = 'MyGSBDrupal_staff';
-        break;
       case 'MBA Admit Round 1':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround1','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround1','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mbaadmitround1';
         break;
       case 'MBA Admit Round 2':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround2','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaadmitround2','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mbaadmitround2';
         break;
       case 'MBA Admit Round 3':
@@ -570,23 +570,23 @@ function gsb_feature_coveo_search_get_filter_info() {
         $contextAudience = 'MyGSBDrupal_mbaadmitround3';
         break;
       case 'MBA plus':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mbaplus','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mbaplus','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mbaplus';
         break;
       case 'MBA1':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mba1','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mba1','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mba1';
         break;
       case 'MBA2':
-        $audience = "(@gsbaudience=('MyGSBDrupal_mba2','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_mba2','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_mba2';
         break;
       case 'MSx':
-        $audience = "(@gsbaudience=('MyGSBDrupal_msx','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_msx','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_msx';
         break;
       case 'MSx Admit':
-        $audience = "(@gsbaudience=('MyGSBDrupal_msxadmit','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_msxadmit','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_msxadmit';
         break;
       case 'PhD':
@@ -594,12 +594,16 @@ function gsb_feature_coveo_search_get_filter_info() {
         $contextAudience = 'MyGSBDrupal_phd';
         break;
       case 'PhD Admit':
-        $audience = "(@gsbaudience=('MyGSBDrupal_phdadmit','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_phdadmit','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_phdadmit';
         break;
       case 'Faculty':
-        $audience = "(@gsbaudience=('MyGSBDrupal_faculty','public') OR NOT @gsbaudience)";
+        $audience = "(@gsbaudience=('MyGSBDrupal_faculty','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
         $contextAudience = 'MyGSBDrupal_faculty';
+        break;
+      case 'Staff':
+        $audience = "(@gsbaudience=('MyGSBDrupal_staff','public','MyGSBDrupal_gen') OR NOT @gsbaudience)";
+        $contextAudience = 'MyGSBDrupal_staff';
         break;
     }
   }
