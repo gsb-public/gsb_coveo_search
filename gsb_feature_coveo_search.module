@@ -29,10 +29,14 @@ function gsb_feature_coveo_search_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $access_callback = 'user_is_logged_in';
+  if (!function_exists('mygsb_masquerade_get_workgroup')) {
+    $access_callback = array(TRUE);
+  }
   $items['coveo-search-page'] = array(
     'title' => 'Search',
     'page callback' => 'gsb_feature_coveo_search_page',
-    'access callback' => array(TRUE),
+    'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
@@ -415,9 +419,20 @@ function gsb_feature_coveo_search_run_search() {
           'injectionDepth' => 1000
         )
       );
-    } 
+    }
     else {
       $data['groupBy'] = array();
+      /* todo: We may be adding this back in a future release
+      // add groupBy/facet for @content_type
+      $data['groupBy'] = array(
+        array(
+          'field' => '@content_type',
+          'maximumNumberOfValues' => 9,
+          'sortCriteria' => 'occurrences',
+          'injectionDepth' => 1000
+        )
+      );
+      */
     }
   }
 
