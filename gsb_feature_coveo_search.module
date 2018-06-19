@@ -8,31 +8,33 @@ require_once(drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme/gsb
  */
 function gsb_feature_coveo_search_menu() {
 
+  $access_callback = 'user_is_logged_in';
+  if (!function_exists('mygsb_masquerade_get_workgroup')) {
+    $access_callback = array(TRUE);
+  }
+
   $items['coveo-search'] = array(
     'title' => 'Search',
     'page callback' => 'gsb_feature_coveo_search_run_search',
-    'access callback' => array(TRUE),
+    'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
   $items['coveo-search/v2/querySuggest'] = array(
     'title' => 'Search',
     'page callback' => 'gsb_feature_coveo_search_run_querysuggest',
-    'access callback' => array(TRUE),
+    'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
     'page callback' => 'gsb_feature_coveo_search_run_analytics',
-    'access callback' => array(TRUE),
+    'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
-  $access_callback = 'user_is_logged_in';
-  if (!function_exists('mygsb_masquerade_get_workgroup')) {
-    $access_callback = array(TRUE);
-  }
+
   $items['coveo-search-page'] = array(
     'title' => 'Search',
     'page callback' => 'gsb_feature_coveo_search_page',
