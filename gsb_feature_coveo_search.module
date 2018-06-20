@@ -56,14 +56,14 @@ function gsb_feature_coveo_search_page_alter(&$page) {
       return;
     }
   }
-  $my_path = drupal_get_path('module', 'gsb_feature_coveo_search' );
+  $module_path = drupal_get_path('module', 'gsb_feature_coveo_search' );
   $page ['content']['#attached']['js'][] = array(
     'type'=>'file',
     'data' => 'https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js'
   );
   $page ['content']['#attached']['js'][] = array(
     'type'=>'file',
-    'data' => $my_path . '/js/coveo-search-page-event.js'
+    'data' => $module_path . '/js/coveo-search-page-event.js'
   );
 }
 
@@ -73,7 +73,7 @@ function gsb_feature_coveo_search_page_alter(&$page) {
  * Make search/* URL to actually behave as coveo-search-page/*.
  */
 function gsb_feature_coveo_search_url_inbound_alter(&$path, $original_path, $path_language) {
-  // This will not allow us to use search module, it will redirect to gsearch instead.
+  // This will not allow us to use search module, it will redirect to coveo instead.
   if (arg(0, $path) == 'search') {
     $path = 'coveo-search-page/' . arg(1, $path);
   }
@@ -94,7 +94,6 @@ function gsb_feature_coveo_search_url_outbound_alter(&$path, &$options, $origina
  * Implements hook_module_implements_alter().
  */
 function gsb_feature_coveo_search_module_implements_alter(&$implementations, $hook) {
-  // Make sure we come after search module's implementation.
   if ($hook == 'menu') {
     $group = $implementations['gsb_feature_coveo_search'];
     unset($implementations['gsb_feature_coveo_search']);
@@ -347,8 +346,6 @@ function gsb_feature_coveo_search_run_search() {
     return;
   }
 
-  $time_start = round(microtime(true) * 1000);
-
   list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
   $source = "@source=(" . '"' . "GSB public website" . '"' . ")";
@@ -374,16 +371,6 @@ function gsb_feature_coveo_search_run_search() {
       $search = $_POST['q'];
     }
 
-    $numberOfResults = 100;
-    if (!empty($_POST['numberOfResults'])) {
-      $numberOfResults = $_POST['numberOfResults'];
-    }
-
-    $firstResult = 0;
-    if (!empty($_POST['firstResult'])) {
-      $firstResult = $_POST['firstResult'];
-    }
-
     $data = $_POST;
 
     $data["q"] = $search;
@@ -391,7 +378,7 @@ function gsb_feature_coveo_search_run_search() {
 
     // todo: The following line was needed to get the 'Faculty' facet working on Public web site.
     // All other facets seemed to work fine.
-    // I believe this needs to be raised as an issue with Coveo support.
+    // This has been raised as an issue with Coveo support.
     //unset($data["enableDuplicateFiltering"]);
     $data["enableDuplicateFiltering"] = true;
 
@@ -424,8 +411,9 @@ function gsb_feature_coveo_search_run_search() {
     }
     else {
       $data['groupBy'] = array();
-      /* todo: We may be adding this back in a future release
+      // todo: We may be adding this back in a future release
       // add groupBy/facet for @content_type
+      /*
       $data['groupBy'] = array(
         array(
           'field' => '@content_type',
@@ -461,34 +449,14 @@ function gsb_feature_coveo_search_run_search() {
   {
     $pattern = $_POST['pattern'];
   }
-
-  $time_end = round(microtime(true) * 1000);
-  $time = $time_end - $time_start;
-
-  $output = "Time from start of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
-  watchdog('coveo', $output);
-
-  $time_start = round(microtime(true) * 1000);
+  
   $result = drupal_http_request($url, $options);
-  $time_end = round(microtime(true) * 1000);
-  $time = $time_end - $time_start;
-
-  $output = "Time for http request = " . sprintf('%f', $time);
-  watchdog('coveo', $output);
-
-  $time_start = round(microtime(true) * 1000);
 
   if (empty($result->data)) {
     return;
   }
 
   drupal_add_http_header('Content-Type', 'application/json');
-
-  $time_end = round(microtime(true) * 1000);
-  $time = $time_end - $time_start;
-
-  $output = "Time at end of proxy = " . sprintf('%f', $time) . " pattern = " . $pattern;
-  watchdog('coveo', $output);
 
   echo $result->data;
   drupal_exit();
@@ -573,8 +541,6 @@ function gsb_feature_coveo_search_get_filter_info() {
     $pipeline = "mygsb-pipeline";
 
     $workgroup = mygsb_masquerade_get_workgroup($user);
-    //dpm('found the workgroup');
-    //dpm($workgroup);
 
     switch ($workgroup) {
       case 'MBA Admit Round 1':
