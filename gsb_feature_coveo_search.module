@@ -274,10 +274,7 @@ function gsb_feature_coveo_search_run_querysuggest() {
 
   list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  $source = "@source=(" . '"' . "GSB public website" . '"' . ")";
-  if ($pipeline == 'mygsb-pipeline') {
-    $source = "(" . "@source=(" . '"' . "GSB public website" . '"' . ")" . " OR " . "@source=(" . '"' . "MyGSB website" . '"' . ")" . ")";
-  }
+  $source = gsb_feature_coveo_search_get_source_info($pipeline);
 
   $data = $_POST;
 
@@ -348,10 +345,7 @@ function gsb_feature_coveo_search_run_search() {
 
   list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
 
-  $source = "@source=(" . '"' . "GSB public website" . '"' . ")";
-  if ($pipeline == 'mygsb-pipeline') {
-    $source = "(" . "@source=(" . '"' . "GSB public website" . '"' . ")" . " OR " . "@source=(" . '"' . "MyGSB website" . '"' . ")" . ")";
-  }
+  $source = gsb_feature_coveo_search_get_source_info($pipeline);
 
   if (!empty($_POST['patternType'])) {
     $data = $_POST;
@@ -449,7 +443,7 @@ function gsb_feature_coveo_search_run_search() {
   {
     $pattern = $_POST['pattern'];
   }
-  
+
   $result = drupal_http_request($url, $options);
 
   if (empty($result->data)) {
@@ -595,4 +589,27 @@ function gsb_feature_coveo_search_get_filter_info() {
   }
 
   return array ($pipeline, $audience, $contextAudience);
+}
+
+/**
+ * Returns source info
+ */
+function gsb_feature_coveo_search_get_source_info($pipeline) {
+
+  $public_source = "GSB public website";
+  $mygsb_source  = "MyGSB website";
+
+  $sandbox_testing = false;
+
+  if ($sandbox_testing) {
+    $public_source = "Stanford GSB public";
+    $mygsb_source  = "MyGSB website";
+  }
+
+  $source = "@source=(" . '"' . $public_source . '"' . ")";
+  if ($pipeline == 'mygsb-pipeline') {
+    $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $mygsb_source . '"' . ")" . ")";
+  }
+
+  return $source;
 }
