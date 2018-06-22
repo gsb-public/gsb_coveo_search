@@ -5,14 +5,14 @@ var gBaseUrl = '';
 
 (function ($) {
 
-  Drupal.behaviors.gsb_feature_coveo_search_page = {
+  Drupal.behaviors.gsb_coveo_search_page = {
     attach: function (context, settings) {
-      gInQueryString = settings.gsb_feature_coveo_search_page.search_query;
+      gInQueryString = settings.gsb_coveo_search_page.search_query;
       gBaseUrl = settings.baseUrl;
     }
   };
 
-  Drupal.gsb_feature_coveo_search_page = Drupal.gsb_feature_coveo_search_page || {};
+  Drupal.gsb_coveo_search_page = Drupal.gsb_coveo_search_page || {};
 
 })(jQuery);
 
