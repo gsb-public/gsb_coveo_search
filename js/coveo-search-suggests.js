@@ -5,13 +5,13 @@ var gBaseUrl = '';
 
 (function ($) {
 
-  Drupal.behaviors.gsb_feature_coveo_search_page = {
+  Drupal.behaviors.gsb_coveo_search_page = {
     attach: function (context, settings) {
       gBaseUrl = settings.baseUrl;
     }
   };
 
-  Drupal.gsb_feature_coveo_search_page = Drupal.gsb_feature_coveo_search_page || {};
+  Drupal.gsb_coveo_search_page = Drupal.gsb_coveo_search_page || {};
 
 })(jQuery);
 
