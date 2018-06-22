@@ -7,10 +7,10 @@
 /**
  * Implements hook_theme().
  */
-function gsb_feature_coveo_search_theme() {
+function gsb_coveo_search_theme() {
 
   $registry = array();
-  $coveo_search_template_dir = drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme';
+  $coveo_search_template_dir = drupal_get_path('module', 'gsb_coveo_search') . '/theme';
 
   $registry['coveo_search_page'] = array(
   'variables' => array('search_data' => NULL),

@@ -1,6 +1,0 @@
-name = GSB Feature Coveo Search
-core = 7.x
-package = GSB
-version = 7.x-1.0
-project = gsb_feature_coveo_search
-

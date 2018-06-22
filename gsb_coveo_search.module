@@ -1,12 +1,12 @@
 <?php
 
 // default theme impementations
-require_once(drupal_get_path('module', 'gsb_feature_coveo_search') . '/theme/gsb_feature_coveo_search.theme.inc');
+require_once(drupal_get_path('module', 'gsb_coveo_search') . '/theme/gsb_coveo_search.theme.inc');
 
 /**
  * Implements hook_menu().
  */
-function gsb_feature_coveo_search_menu() {
+function gsb_coveo_search_menu() {
 
   $access_callback = 'user_is_logged_in';
   if (!function_exists('mygsb_masquerade_get_workgroup')) {
@@ -15,21 +15,21 @@ function gsb_feature_coveo_search_menu() {
 
   $items['coveo-search'] = array(
     'title' => 'Search',
-    'page callback' => 'gsb_feature_coveo_search_run_search',
+    'page callback' => 'gsb_coveo_search_run_search',
     'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
   $items['coveo-search/v2/querySuggest'] = array(
     'title' => 'Search',
-    'page callback' => 'gsb_feature_coveo_search_run_querysuggest',
+    'page callback' => 'gsb_coveo_search_run_querysuggest',
     'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
 
   $items['coveo-analytics'] = array(
     'title' => 'Analytics',
-    'page callback' => 'gsb_feature_coveo_search_run_analytics',
+    'page callback' => 'gsb_coveo_search_run_analytics',
     'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
@@ -37,7 +37,7 @@ function gsb_feature_coveo_search_menu() {
 
   $items['coveo-search-page'] = array(
     'title' => 'Search',
-    'page callback' => 'gsb_feature_coveo_search_page',
+    'page callback' => 'gsb_coveo_search_page',
     'access callback' => $access_callback,
     'type' => MENU_CALLBACK,
   );
@@ -50,13 +50,13 @@ function gsb_feature_coveo_search_menu() {
  *
  * Adds the Coveo Page Event javascript code for tracking of all page views.
  */
-function gsb_feature_coveo_search_page_alter(&$page) {
+function gsb_coveo_search_page_alter(&$page) {
   if (!empty($_GET['q'])) {
     if (strpos($_GET['q'], 'admin') !== false) {
       return;
     }
   }
-  $module_path = drupal_get_path('module', 'gsb_feature_coveo_search' );
+  $module_path = drupal_get_path('module', 'gsb_coveo_search' );
   $page ['content']['#attached']['js'][] = array(
     'type'=>'file',
     'data' => 'https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js'
@@ -72,7 +72,7 @@ function gsb_feature_coveo_search_page_alter(&$page) {
  *
  * Make search/* URL to actually behave as coveo-search-page/*.
  */
-function gsb_feature_coveo_search_url_inbound_alter(&$path, $original_path, $path_language) {
+function gsb_coveo_search_url_inbound_alter(&$path, $original_path, $path_language) {
   // This will not allow us to use search module, it will redirect to coveo instead.
   if (arg(0, $path) == 'search') {
     $path = 'coveo-search-page/' . arg(1, $path);
@@ -84,7 +84,7 @@ function gsb_feature_coveo_search_url_inbound_alter(&$path, $original_path, $pat
  *
  * Make coveo-search-page/* links to go to search/* URL.
  */
-function gsb_feature_coveo_search_url_outbound_alter(&$path, &$options, $original_path) {
+function gsb_coveo_search_url_outbound_alter(&$path, &$options, $original_path) {
   if (arg(0, $path) == 'coveo-search-page') {
     $path = str_replace('coveo-search-page', 'search', $path);
   }
@@ -93,18 +93,18 @@ function gsb_feature_coveo_search_url_outbound_alter(&$path, &$options, $origina
 /**
  * Implements hook_module_implements_alter().
  */
-function gsb_feature_coveo_search_module_implements_alter(&$implementations, $hook) {
+function gsb_coveo_search_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'menu') {
-    $group = $implementations['gsb_feature_coveo_search'];
-    unset($implementations['gsb_feature_coveo_search']);
-    $implementations['gsb_feature_coveo_search'] = $group;
+    $group = $implementations['gsb_coveo_search'];
+    unset($implementations['gsb_coveo_search']);
+    $implementations['gsb_coveo_search'] = $group;
   }
 }
 
 /**
  * Implements hook_block_info().
  */
-function gsb_feature_coveo_search_block_info() {
+function gsb_coveo_search_block_info() {
   $blocks = array();
 
   // block search form
@@ -125,7 +125,7 @@ function gsb_feature_coveo_search_block_info() {
 /**
  * Implements hook_block_view().
  */
-function gsb_feature_coveo_search_block_view($delta = '') {
+function gsb_coveo_search_block_view($delta = '') {
 
   $block = array();
 
@@ -239,21 +239,21 @@ function coveo_search_block_suggests_form_submit($form, &$form_state) {
 /**
  * Displays Search Page using Coveo template
  */
-function gsb_feature_coveo_search_page() {
+function gsb_coveo_search_page() {
   global $base_url;
 
   $search_query = '';
 
   drupal_add_css('https://static.cloud.coveo.com/searchui/v2.3826/css/CoveoFullSearchNewDesign.css', 'external');
 
-  drupal_add_css(drupal_get_path('module', 'gsb_feature_coveo_search') . '/css/coveo-search-custom.css');
+  drupal_add_css(drupal_get_path('module', 'gsb_coveo_search') . '/css/coveo-search-custom.css');
 
   drupal_add_js('https://static.cloud.coveo.com/searchui/v2.3826/js/CoveoJsSearch.min.js', 'external');
   drupal_add_js('https://static.cloud.coveo.com/searchui/v2.3826/js/templates/templatesNew.js', 'external');
 
-  drupal_add_js(drupal_get_path('module', 'gsb_feature_coveo_search') . '/js/coveo-search-page.js');
+  drupal_add_js(drupal_get_path('module', 'gsb_coveo_search') . '/js/coveo-search-page.js');
 
-  drupal_add_js(array('gsb_feature_coveo_search_page' => array('search_query' => $search_query)), 'setting');
+  drupal_add_js(array('gsb_coveo_search_page' => array('search_query' => $search_query)), 'setting');
   drupal_add_js(array('baseUrl' => $base_url), 'setting');
 
   $template_data = array();
@@ -270,11 +270,11 @@ function gsb_feature_coveo_search_page() {
 /**
  * Proxy for posting query suggestions
  */
-function gsb_feature_coveo_search_run_querysuggest() {
+function gsb_coveo_search_run_querysuggest() {
 
-  list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
+  list($pipeline, $audience, $contextAudience) = gsb_coveo_search_get_filter_info();
 
-  $source = gsb_feature_coveo_search_get_source_info($pipeline);
+  $source = gsb_coveo_search_get_source_info($pipeline);
 
   $data = $_POST;
 
@@ -337,15 +337,15 @@ function gsb_feature_coveo_search_run_querysuggest() {
 /**
  * Proxy for posting search queries
  */
-function gsb_feature_coveo_search_run_search() {
+function gsb_coveo_search_run_search() {
 
   if (!empty($_GET['q']) && strpos($_GET['q'], 'subscriptions')) {
     return;
   }
 
-  list($pipeline, $audience, $contextAudience) = gsb_feature_coveo_search_get_filter_info();
+  list($pipeline, $audience, $contextAudience) = gsb_coveo_search_get_filter_info();
 
-  $source = gsb_feature_coveo_search_get_source_info($pipeline);
+  $source = gsb_coveo_search_get_source_info($pipeline);
 
   if (!empty($_POST['patternType'])) {
     $data = $_POST;
@@ -459,7 +459,7 @@ function gsb_feature_coveo_search_run_search() {
 /**
  * Proxy for posting analytics data
  */
-function gsb_feature_coveo_search_run_analytics() {
+function gsb_coveo_search_run_analytics() {
 
   $received_json = file_get_contents("php://input",  TRUE);
   $json = drupal_json_decode($received_json, TRUE);
@@ -474,7 +474,7 @@ function gsb_feature_coveo_search_run_analytics() {
     return;
   }
 
-  list($pipeline, $audience) = gsb_feature_coveo_search_get_filter_info();
+  list($pipeline, $audience) = gsb_coveo_search_get_filter_info();
 
   if (empty($data['customData'])) {
     $data["customData"] = array(
@@ -521,7 +521,7 @@ function gsb_feature_coveo_search_run_analytics() {
 /**
  * Returns pipeline and audience filter settings for user
  */
-function gsb_feature_coveo_search_get_filter_info() {
+function gsb_coveo_search_get_filter_info() {
   global $user;
 
   $pipeline = "gsb-pipeline";
@@ -594,7 +594,7 @@ function gsb_feature_coveo_search_get_filter_info() {
 /**
  * Returns source info
  */
-function gsb_feature_coveo_search_get_source_info($pipeline) {
+function gsb_coveo_search_get_source_info($pipeline) {
 
   $public_source = "GSB public website";
   $mygsb_source  = "MyGSB website";
