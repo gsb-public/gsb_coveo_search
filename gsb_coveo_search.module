@@ -486,6 +486,9 @@ function gsb_coveo_search_run_analytics() {
   else {
     $data["customData"]["context"] = array("context_audience" => $audience);
   }
+  
+  // set the searchHub (originLevel1) to the pipeline name
+  $data["originLevel1"] = $pipeline;
 
   $analytics_data = json_encode($data);
 
