@@ -253,7 +253,7 @@ function gsb_coveo_search_page() {
 
   drupal_add_js(drupal_get_path('module', 'gsb_coveo_search') . '/js/coveo-search-page.js');
 
-  drupal_add_js(array('gsb_coveo_search_page' => array('search_query' => $search_query)), 'setting');
+  drupal_add_js(array('gsb_coveo_search_page' => array('search_query' => $search_query, 'coveo_debug' => 'false')), 'setting');
   drupal_add_js(array('baseUrl' => $base_url), 'setting');
 
   $template_data = array();
