@@ -2,12 +2,14 @@
 
 var gInQueryString = '';
 var gBaseUrl = '';
+var gDebug = 'false';
 
 (function ($) {
 
   Drupal.behaviors.gsb_coveo_search_page = {
     attach: function (context, settings) {
       gInQueryString = settings.gsb_coveo_search_page.search_query;
+      gDebug = settings.gsb_coveo_search_page.coveo_debug;
       gBaseUrl = settings.baseUrl;
     }
   };
@@ -33,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
   Coveo.Analytics.options.organization.defaultValue = coveoOrgId;
 
   var root = Coveo.$$(document).find('#search');
+
+  document.querySelector('#search').setAttribute('data-enable-debug-info', gDebug);
 
   Coveo.init(document.querySelector('#search'));
 
