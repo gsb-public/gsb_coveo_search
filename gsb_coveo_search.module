@@ -396,10 +396,23 @@ function gsb_coveo_search_run_search() {
       // add groupBy/facet for @source
       $data['groupBy'] = array(
         array(
-          'field' => '@source',
+          'field' => '@department',
           'maximumNumberOfValues' => 9,
           'sortCriteria' => 'occurrences',
           'injectionDepth' => 1000
+        ),
+        array(
+          'field' => '@source',
+          'maximumNumberOfValues' => 9,
+          'sortCriteria' => 'occurrences',
+          'injectionDepth' => 1000,
+          'allowedValues' => array(
+             'mygsb website',
+             'stanford gsb public',
+             'stanford gsb youtube',
+             'gsb events',
+             'stanford events'
+          )
         )
       );
     }
