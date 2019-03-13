@@ -21,7 +21,8 @@
   </div>
   <div class="coveo-main-section">
     <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Source" data-field="@source" data-tab="All" data-custom-sort="mygsb website, gsb public website" data-enable-settings="false"></div>
+        <div class="CoveoFacet" data-title="Department" data-field="@department" data-tab="All" data-enable-settings="false"></div>
+        <div class="CoveoFacet" data-title="Source" data-field="@source" data-tab="All" data-custom-sort="mygsb website, stanford gsb public, stanford gsb youtube, gsb events, stanford events" data-enable-settings="false"></div>
     </div>
     <div class="coveo-results-column">
       <div class="CoveoShareQuery"></div>
