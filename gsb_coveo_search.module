@@ -626,7 +626,7 @@ function gsb_coveo_search_get_source_info($pipeline) {
 
   $source = "@source=(" . '"' . $public_source . '"' . ")";
   if ($pipeline == 'mygsb-pipeline') {
-    $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $mygsb_source . '"' . ")" . "@source=(" . '"' . $gsb_events . '"' . ")" . "@source=(" . '"' . $stanford_events . '"' . ")" . ")";
+    $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $mygsb_source . '"' . ")" . " OR " . "@source=(" . '"' . $gsb_events . '"' . ")" ." OR " . "@source=(" . '"' . $stanford_events . '"' . ")" . ")";
   }
 
   return $source;
