@@ -454,3 +454,7 @@ a.CoveoResultLink:visited,
 .coveo-query-summary-cancel-last {
   font-size: 16px;
 }
+
+.CoveoSearchInterface .coveo-facet-column {
+  width: 305px;
+}

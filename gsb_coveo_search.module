@@ -614,6 +614,9 @@ function gsb_coveo_search_get_source_info($pipeline) {
 
   $public_source = "GSB public website";
   $mygsb_source  = "MyGSB website";
+  $gsb_events = "GSB Events";
+  $stanford_events = "Stanford Events";
+  $gsb_youtube = "Stanford GSB YouTube";
 
   $sandbox_testing = false;
 
@@ -622,9 +625,9 @@ function gsb_coveo_search_get_source_info($pipeline) {
     $mygsb_source  = "MyGSB website";
   }
 
-  $source = "@source=(" . '"' . $public_source . '"' . ")";
+  $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR " . "@source=(" . '"' . $gsb_youtube . '"' . ")" . ")";
   if ($pipeline == 'mygsb-pipeline') {
-    $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $mygsb_source . '"' . ")" . ")";
+    $source = "(" . "@source=(" . '"' . $public_source . '"' . ")" . " OR " . "@source=(" . '"' . $mygsb_source . '"' . ")" . " OR " . "@source=(" . '"' . $gsb_events . '"' . ")" . " OR " . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR " . "@source=(" . '"' . $gsb_youtube . '"' . ")" . ")";
   }
 
   return $source;
