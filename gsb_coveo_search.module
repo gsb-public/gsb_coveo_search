@@ -394,6 +394,20 @@ function gsb_coveo_search_run_search() {
     // If on MyGSB site
     if (function_exists('mygsb_masquerade_get_workgroup')) {
       // add groupBy/facet for @source
+
+      $public_source = "GSB public website";
+      $mygsb_source  = "MyGSB website";
+
+      $sandbox_testing = false;
+
+      if ($sandbox_testing) {
+        $public_source = "Stanford GSB public";
+        $mygsb_source  = "MyGSB website";
+      }
+      
+      $public_source = strtolower($public_source);
+      $mygsb_source = strtolower($mygsb_source);
+      
       $data['groupBy'] = array(
         array(
           'field' => '@source',
@@ -401,8 +415,8 @@ function gsb_coveo_search_run_search() {
           'sortCriteria' => 'occurrences',
           'injectionDepth' => 1000,
           'allowedValues' => array(
-             'mygsb website',
-             'stanford gsb public',
+             $mygsb_source,
+             $public_source,
              'stanford gsb youtube',
              'gsb events',
              'stanford events'
