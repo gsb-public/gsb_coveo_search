@@ -358,6 +358,13 @@ function gsb_coveo_search_run_search() {
     unset($data['sortCriteria']);
   }
   else {
+
+    $post = drupal_get_query_parameters($_POST);
+
+    if (!isset($post['referrer'])) {
+      return;
+    }
+
     if (empty($_POST['q'])) {
       $search = '';
     }
@@ -365,7 +372,7 @@ function gsb_coveo_search_run_search() {
       $search = $_POST['q'];
     }
 
-    $data = $_POST;
+    $data = $post;
 
     $data["q"] = $search;
     $data["cq"] = $source . " AND " . $audience;
@@ -415,11 +422,11 @@ function gsb_coveo_search_run_search() {
           'sortCriteria' => 'occurrences',
           'injectionDepth' => 1000,
           'allowedValues' => array(
-             $mygsb_source,
-             $public_source,
-             'stanford gsb youtube',
-             'gsb events',
-             'stanford events'
+            $mygsb_source,
+            $public_source,
+            'stanford gsb youtube',
+            'gsb events',
+            'stanford events'
           )
         ),
         array(
@@ -640,18 +647,18 @@ function gsb_coveo_search_get_source_info($pipeline) {
   }
 
   $source = "("
-            . "@source=(" . '"' . $public_source . '"' . ")" . " OR "
-            . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR "
-            . "@source=(" . '"' . $stanford_youtube . '"' . ")" .
-          ")";
+    . "@source=(" . '"' . $public_source . '"' . ")" . " OR "
+    . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR "
+    . "@source=(" . '"' . $stanford_youtube . '"' . ")" .
+    ")";
   if ($pipeline == 'mygsb-pipeline') {
     $source = "("
-              . "@source=(" . '"' . $public_source . '"' . ")" . " OR "
-              . "@source=(" . '"' . $mygsb_source . '"' . ")" . " OR "
-              . "@source=(" . '"' . $gsb_events . '"' . ")" . " OR "
-              . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR "
-              . "@source=(" . '"' . $stanford_youtube . '"' . ")" .
-          ")";
+      . "@source=(" . '"' . $public_source . '"' . ")" . " OR "
+      . "@source=(" . '"' . $mygsb_source . '"' . ")" . " OR "
+      . "@source=(" . '"' . $gsb_events . '"' . ")" . " OR "
+      . "@source=(" . '"' . $stanford_events . '"' . ")" . " OR "
+      . "@source=(" . '"' . $stanford_youtube . '"' . ")" .
+      ")";
   }
 
   return $source;
