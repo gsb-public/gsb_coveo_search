@@ -38,7 +38,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelector('#search').setAttribute('data-enable-debug-info', gDebug);
 
-  Coveo.init(document.querySelector('#search'));
+  var sourceFacetValueCaption = {
+    "Stanford GSB public" : "GSB Public website",
+    "GSB Public website" : "GSB Public website",
+    "Stanford GSB YouTube" : "GSB YouTube"
+  };
+
+  Coveo.init(document.querySelector("#search"), {
+    sourceFilter : {
+      valueCaption : sourceFacetValueCaption
+    }
+  });
 
   Coveo.$$(root).on('buildingQuery', function (e, args) {
 
