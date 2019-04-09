@@ -34,7 +34,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var root = Coveo.$$(document).find('#search');
 
-  Coveo.init(document.querySelector('#search'));
+  var sourceFacetValueCaption = {
+    "Stanford GSB public" : "GSB Public website",
+    "GSB Public website" : "GSB Public website",
+    "Stanford GSB YouTube" : "GSB YouTube"
+  };
+
+  Coveo.init(document.querySelector("#search"), {
+    sourceFilter : {
+      valueCaption : sourceFacetValueCaption
+    }
+  });
 
   Coveo.$$(root).on('buildingQuery', function (e, args) {
 
