@@ -34,8 +34,21 @@ function gsb_coveo_search_menu() {
     'type' => MENU_CALLBACK,
   );
 
-
   $items['coveo-search-page'] = array(
+    'title' => 'Search',
+    'page callback' => 'gsb_coveo_search_page',
+    'access callback' => $access_callback,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['exec-ed/search'] = array(
+    'title' => 'Search',
+    'page callback' => 'gsb_coveo_search_page',
+    'access callback' => $access_callback,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['seed/search'] = array(
     'title' => 'Search',
     'page callback' => 'gsb_coveo_search_page',
     'access callback' => $access_callback,
@@ -185,7 +198,18 @@ function coveo_search_block_form_submit($form, &$form_state) {
 
   // set the redirect
   $search_query = rawurlencode($form_state['values']['search_keys']);
-  $form_state['redirect'] = url($base_url . '/search#q=' . $search_query, array('absolute' => TRUE));
+
+  $search_path = '/search#q=';
+  if (strpos($form["#action"], "/exec-ed") === 0)
+  {
+    $search_path = '/exec-ed' . $search_path;
+  }
+  if (strpos($form["#action"], "/seed") === 0)
+  {
+    $search_path = '/seed' . $search_path;
+  }
+
+  $form_state['redirect'] = url($base_url . $search_path . $search_query, array('absolute' => TRUE));
   // search execution happens in page callback
 }
 
@@ -271,6 +295,7 @@ function gsb_coveo_search_page() {
  * Proxy for posting query suggestions
  */
 function gsb_coveo_search_run_querysuggest() {
+  global $base_url;
 
   list($pipeline, $audience, $contextAudience) = gsb_coveo_search_get_filter_info();
 
@@ -280,8 +305,19 @@ function gsb_coveo_search_run_querysuggest() {
 
   $search = $_POST['q'];
 
+  // filtering by url if we are under exec-ed or seed subsites
+
+  $filter_by_url = "";
+  if (strpos($_REQUEST["referrer"], '/exec-ed') === 0) {
+    $filter_by_url = $base_url . "/exec-ed";
+    $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
+  }
+  if (strpos($_REQUEST["referrer"], '/seed') === 0) {
+    $filter_by_url = " AND " . $base_url . "/seed";
+  }
+
   $data["q"] = $search;
-  $data["cq"] = $source . " AND " . $audience;
+  $data["cq"] = $source . " AND " . $audience . $filter_by_url;
 
   $data["pipeline"] = $pipeline;
   $data["searchHub"] = $pipeline;
@@ -338,6 +374,7 @@ function gsb_coveo_search_run_querysuggest() {
  * Proxy for posting search queries
  */
 function gsb_coveo_search_run_search() {
+  global $base_url;
 
   if (!empty($_GET['q']) && strpos($_GET['q'], 'subscriptions')) {
     return;
@@ -374,8 +411,19 @@ function gsb_coveo_search_run_search() {
 
     $data = $post;
 
+    // filtering by url if we are under exec-ed or seed subsites
+
+    $filter_by_url = "";
+    if (strpos($_REQUEST["referrer"], '/exec-ed')) {
+      $filter_by_url = $base_url . "/exec-ed";
+      $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
+    }
+    if (strpos($_REQUEST["referrer"], '/seed')) {
+      $filter_by_url = " AND " . $base_url . "/seed";
+    }
+
     $data["q"] = $search;
-    $data["cq"] = $source . " AND " . $audience;
+    $data["cq"] = $source . " AND " . $audience . $filter_by_url;
 
     // todo: The following line was needed to get the 'Faculty' facet working on Public web site.
     // All other facets seemed to work fine.
