@@ -313,7 +313,8 @@ function gsb_coveo_search_run_querysuggest() {
     $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
   }
   if (strpos($_REQUEST["referrer"], '/seed') === 0) {
-    $filter_by_url = " AND " . $base_url . "/seed";
+    $filter_by_url = $base_url . "/seed";
+    $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
   }
 
   $data["q"] = $search;
@@ -414,12 +415,13 @@ function gsb_coveo_search_run_search() {
     // filtering by url if we are under exec-ed or seed subsites
 
     $filter_by_url = "";
-    if (strpos($_REQUEST["referrer"], '/exec-ed')) {
+    if (strpos($_REQUEST["referrer"], '/exec-ed') === 0) {
       $filter_by_url = $base_url . "/exec-ed";
       $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
     }
-    if (strpos($_REQUEST["referrer"], '/seed')) {
-      $filter_by_url = " AND " . $base_url . "/seed";
+    if (strpos($_REQUEST["referrer"], '/seed') === 0) {
+      $filter_by_url = $base_url . "/seed";
+      $filter_by_url = " AND " . "(@uri=('" . $filter_by_url . "'))";
     }
 
     $data["q"] = $search;
@@ -687,7 +689,7 @@ function gsb_coveo_search_get_source_info($pipeline) {
   $stanford_events = "Stanford Events";
   $stanford_youtube = "Stanford GSB YouTube";
 
-  $sandbox_testing = false;
+  $sandbox_testing = true;
 
   if ($sandbox_testing) {
     $public_source = "Stanford GSB public";
