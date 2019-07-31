@@ -455,7 +455,7 @@ function gsb_coveo_search_run_search() {
       $public_source = "GSB public website";
       $mygsb_source  = "MyGSB website";
 
-      $sandbox_testing = false;
+      $sandbox_testing = true;
 
       if ($sandbox_testing) {
         $public_source = "Stanford GSB public";
